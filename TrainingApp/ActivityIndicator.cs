@@ -33,9 +33,9 @@ public class ActivityIndicator
     //TODO choose color palette
     private Color setIndicatorBoxColor(ActivityState state) => state switch
     {
-        ActivityState.PRESENT => new Color(220, 220, 220),
-        ActivityState.RESTDAY => new Color(50, 50, 220),
-        _ => new Color(30, 120, 120)
+        ActivityState.PRESENT => new Color(152, 255, 79),
+        ActivityState.RESTDAY => new Color(255, 180, 80),
+        _ => new Color(0,0,0,0.3f)
     };
 
     public void setActivityStatus(ActivityState activityState)

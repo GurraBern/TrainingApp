@@ -36,6 +36,7 @@ public partial class MainPage : ContentPage
         foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek))){
             Label dayLabel = new Label();
             dayLabel.Text = day.ToString();
+            dayLabel.TextColor = new Color(0,0,0);
             dayLabel.FontSize = 8;
 
             Thickness margin = dayLabel.Margin;
@@ -48,7 +49,7 @@ public partial class MainPage : ContentPage
         for (int i = 0; i < daysInMonth; i++)
 		{
             ActivityIndicator activityIndicator = new ActivityIndicator();
-
+            activityIndicator.setActivityStatus(ActivityState.ABSENT);
             DateTime date = new DateTime(year, month, (i+1));
             activityIndicator.setDate(date);
 
@@ -60,17 +61,18 @@ public partial class MainPage : ContentPage
 
 	private void Present_Clicked(object sender, EventArgs e)
 	{
-		activityIndicators[0].setActivityStatus(ActivityState.PRESENT);
+        
+        activityIndicators[DateTime.Now.Day-1].setActivityStatus(ActivityState.PRESENT);
 	}
 
     private void RestDay_Clicked(object sender, EventArgs e)
     {
-        activityIndicators[0].setActivityStatus(ActivityState.RESTDAY);
+        activityIndicators[DateTime.Now.Day - 1].setActivityStatus(ActivityState.RESTDAY);
     }
 
     private void Present_Absent(object sender, EventArgs e)
     {
-        activityIndicators[0].setActivityStatus(ActivityState.ABSENT);
+        activityIndicators[DateTime.Now.Day - 1].setActivityStatus(ActivityState.ABSENT);
     }
 }
 

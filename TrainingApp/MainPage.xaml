@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TrainingApp.MainPage">
 
-    <VerticalStackLayout>
+    <VerticalStackLayout BackgroundColor="White">
     <!--should be dynamic with months-->
-        <FlexLayout x:Name="daysLabels" BackgroundColor="Black" WidthRequest="180" HeightRequest="10" VerticalOptions="Start" HorizontalOptions="Center" Margin="4,30,0,0"  Wrap="Wrap"></FlexLayout>
-        <FlexLayout x:Name="flexLayout" BackgroundColor="Black" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center"  Wrap="Wrap"></FlexLayout>
+        <FlexLayout x:Name="daysLabels" WidthRequest="180" HeightRequest="10" VerticalOptions="Start" HorizontalOptions="Center" Margin="4,30,0,0"  Wrap="Wrap"></FlexLayout>
+        <FlexLayout x:Name="flexLayout" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center"  Wrap="Wrap"></FlexLayout>
 
         <HorizontalStackLayout Margin="50">
             <Button Clicked="Present_Clicked"  Text="Went To Gym"></Button>
