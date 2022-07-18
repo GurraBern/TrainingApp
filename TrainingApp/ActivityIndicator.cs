@@ -8,18 +8,13 @@ public class ActivityIndicator
 
     public ActivityIndicator()
 	{
-        initActivityBox();
+        InitActivityBox();
     }
 
-    private BoxView GetBoxIndicator()
-    {
-        return this.boxIndicator;
-    }
-
-    private void initActivityBox()
+    private void InitActivityBox()
     {
         this.boxIndicator = new BoxView();
-        setIndicatorBoxColor(this.activityState);
+        SetIndicatorBoxColor(this.activityState);
         boxIndicator.Opacity = 1;
         boxIndicator.CornerRadius = 2;
         boxIndicator.WidthRequest = 20;
@@ -31,30 +26,30 @@ public class ActivityIndicator
 
 
     //TODO choose color palette
-    private Color setIndicatorBoxColor(ActivityState state) => state switch
+    private Color SetIndicatorBoxColor(ActivityState state) => state switch
     {
         ActivityState.PRESENT => new Color(152, 255, 79),
         ActivityState.RESTDAY => new Color(255, 180, 80),
         _ => new Color(0,0,0,0.3f)
     };
 
-    public void setActivityStatus(ActivityState activityState)
+    public void SetActivityStatus(ActivityState activityState)
 	{
         this.activityState = activityState;
-        this.boxIndicator.Color = setIndicatorBoxColor(activityState);
+        this.boxIndicator.Color = SetIndicatorBoxColor(activityState);
     }
 
-    public void setDate(DateTime date)
+    public void SetDate(DateTime date)
     {
         this.timeOfDate = date;
     }
 
-    public DateTime getDate()
+    public DateTime GetDate()
     {
         return this.timeOfDate;
     }
 
-    public BoxView getBoxIndicator()
+    public BoxView GetBoxIndicator()
     {
         return this.boxIndicator;
     }
