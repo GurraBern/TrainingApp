@@ -15,45 +15,26 @@ public partial class MainPage : ContentPage
 
     public MainPage()
 	{
-		InitializeComponent();
+        StartUp();
+    }
+
+    private void StartUp()
+    {
+        InitializeComponent();
         db = new DateIndicatorService();
         FillActivityGridAsync();
     }
-
-
+   
     private async Task<IEnumerable<ActivityIndicatorModel>> GetActivityDates()
     {
-        var activityDates = await Task.Run(() => DateIndicatorService.GetDates());
-
-        return activityDates;
-    }
-
-
-    private async Task<List<ActivityIndicator>> GetAllDatesAsync()
-    {
-        List<ActivityIndicator> test = new List<ActivityIndicator>(); 
-        var dateIndicators = await DateIndicatorService.GetDates();
-        //this.activityIndicators.AddRange(dateIndicators);
-
-        return test;
+        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
+        return activityDatesEnum;
     }
 
     private async Task AddDate(DateTime dateTime)
     {
         await DateIndicatorService.AddDate(dateTime, ActivityState.PRESENT);
     }
-    
-
-    public enum DaysOfWeek
-    {
-        Mon = 0,
-        Tue = 1,
-        Wed = 2,
-        Thu = 3,
-        Fri = 4,
-        Sat = 5,
-        Sun = 6
-    };
 
     private void FillInDayLabels()
     {
@@ -78,39 +59,69 @@ public partial class MainPage : ContentPage
         //int month = System.DateTime.Today.Month;
         //int daysInMonth = System.DateTime.DaysInMonth(year, month);
         this.activityIndicators = new List<ActivityIndicator>();
+
+        //TODO should be a XAML Component?
         FillInDayLabels();
 
-        var test = await GetActivityDates();
-        List<ActivityIndicatorModel> days = test.ToList();
+        var dates = await GetActivityDates();
+        List<ActivityIndicatorModel> activityDates = dates.ToList();
      
-        foreach (ActivityIndicatorModel day in days)
+        foreach (ActivityIndicatorModel activityDate in activityDates)
         {
-            ActivityIndicator dateIndicatorBox = new ActivityIndicator(day);
+            ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
             dateIndicatorBox.SetActivityStatus(ActivityState.PRESENT);
             flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
 
     }
 
-    private void SetIndicatorStatus(ActivityState state)
+    private async Task SetIndicatorStatusAsync(ActivityState state)
     {
-        //TODO daysOffset depricated
-        activityIndicators[DateTime.Now.Day + this._daysOffset].SetActivityStatus(state);
+        await DateIndicatorService.UpdateDate(DateTime.Today, state);
+        // TODO refresh
+
+        RefreshActivityGridAsync();
     }
 
-    private void Present_Clicked(object sender, EventArgs e)
+    private async Task RefreshActivityGridAsync()
     {
-        SetIndicatorStatus(ActivityState.PRESENT);
+
+        flexLayout.Clear();
+        var dates = await GetActivityDates();
+        List<ActivityIndicatorModel> activityDates = dates.ToList();
+        foreach (ActivityIndicatorModel activityDate in activityDates)
+        {
+            ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
+            dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
+            flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
+        }
     }
 
-    private void RestDay_Clicked(object sender, EventArgs e)
+    private async void Present_Clicked(object sender, EventArgs e)
     {
-        SetIndicatorStatus(ActivityState.RESTDAY);
+        await SetIndicatorStatusAsync(ActivityState.PRESENT);
     }
 
-    private void Present_Absent(object sender, EventArgs e)
+    private async void RestDay_Clicked(object sender, EventArgs e)
     {
-        SetIndicatorStatus(ActivityState.ABSENT);
+        await SetIndicatorStatusAsync(ActivityState.RESTDAY);
     }
+
+    private async void Present_Absent(object sender, EventArgs e)
+    {
+        await SetIndicatorStatusAsync(ActivityState.ABSENT);
+    }
+
+    public enum DaysOfWeek
+    {
+        Mon = 0,
+        Tue = 1,
+        Wed = 2,
+        Thu = 3,
+        Fri = 4,
+        Sat = 5,
+        Sun = 6
+    };
+
 }
 

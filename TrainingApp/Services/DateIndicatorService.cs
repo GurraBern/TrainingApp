@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Microsoft.Maui.Controls;
+using SQLite;
 
 namespace TrainingApp.Services;
 
@@ -30,6 +31,25 @@ public class DateIndicatorService
         };
 
         var id = await db.InsertAsync(activityIndicator);
+    }
+
+    public static async Task UpdateDate(DateTime date, ActivityState activityState)
+    {
+        //TODO find specific date
+        //update activityState        
+
+        var activityIndicatorObj = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(date)).FirstOrDefaultAsync();
+        activityIndicatorObj.ActivityState = activityState;
+        await db.UpdateAsync(activityIndicatorObj);
+
+
+
+        /*
+        var test3 = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(date)).FirstOrDefaultAsync();
+        var bruh = test3.ActivityState;*/
+        //TODO update obj
+
+
     }
 
     public static async Task RemoveDate(int id)
