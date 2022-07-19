@@ -9,6 +9,7 @@ public class DateIndicatorService
 
     static async Task Init()
     {
+
         if (db != null)
         {
             return;
@@ -16,8 +17,25 @@ public class DateIndicatorService
 
         var databasePath = Path.Combine(FileSystem.AppDataDirectory, "DateDataBase.db");
         db = new SQLiteAsyncConnection(databasePath);
-
         await db.CreateTableAsync<ActivityIndicatorModel>();
+
+        //await db.DeleteAllAsync<ActivityIndicatorModel>();
+        //await AddDatesMonth(new DateTime(2022, 7, 25));
+    }
+
+    public static async Task AddDatesMonth(DateTime dateTime)
+    {
+        await Init();
+
+        int daysCount = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
+
+        //TODO better to have one call to database
+        for(int i = 1; i < daysCount+1; i++)
+        {
+            var date = new DateTime(dateTime.Year, dateTime.Month, i);
+            await AddDate(date, ActivityState.ABSENT);
+        }
+
     }
 
     public static async Task AddDate(DateTime date, ActivityState activityState)
@@ -35,21 +53,10 @@ public class DateIndicatorService
 
     public static async Task UpdateDate(DateTime date, ActivityState activityState)
     {
-        //TODO find specific date
-        //update activityState        
 
         var activityIndicatorObj = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(date)).FirstOrDefaultAsync();
         activityIndicatorObj.ActivityState = activityState;
         await db.UpdateAsync(activityIndicatorObj);
-
-
-
-        /*
-        var test3 = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(date)).FirstOrDefaultAsync();
-        var bruh = test3.ActivityState;*/
-        //TODO update obj
-
-
     }
 
     public static async Task RemoveDate(int id)

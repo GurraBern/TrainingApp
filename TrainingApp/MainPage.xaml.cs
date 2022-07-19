@@ -15,16 +15,22 @@ public partial class MainPage : ContentPage
 
     public MainPage()
 	{
-        StartUp();
+        StartUpAsync();
     }
 
-    private void StartUp()
+    private async Task StartUpAsync()
     {
         InitializeComponent();
         db = new DateIndicatorService();
+        //await FillMonthAsync();
         FillActivityGridAsync();
     }
-   
+
+    private async Task FillMonthAsync()
+    {
+        await DateIndicatorService.AddDatesMonth(DateTime.Today);
+    }
+
     private async Task<IEnumerable<ActivityIndicatorModel>> GetActivityDates()
     {
         var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
@@ -58,21 +64,11 @@ public partial class MainPage : ContentPage
         //int year = System.DateTime.Today.Year;
         //int month = System.DateTime.Today.Month;
         //int daysInMonth = System.DateTime.DaysInMonth(year, month);
-        this.activityIndicators = new List<ActivityIndicator>();
 
         //TODO should be a XAML Component?
         FillInDayLabels();
 
-        var dates = await GetActivityDates();
-        List<ActivityIndicatorModel> activityDates = dates.ToList();
-     
-        foreach (ActivityIndicatorModel activityDate in activityDates)
-        {
-            ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
-            dateIndicatorBox.SetActivityStatus(ActivityState.PRESENT);
-            flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
-        }
-
+        RefreshActivityGridAsync();
     }
 
     private async Task SetIndicatorStatusAsync(ActivityState state)
@@ -122,6 +118,4 @@ public partial class MainPage : ContentPage
         Sat = 5,
         Sun = 6
     };
-
 }
-
