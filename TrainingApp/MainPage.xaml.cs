@@ -1,18 +1,49 @@
-﻿namespace TrainingApp;
+﻿using TrainingApp.Services;
+
+namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-	//list width all dateIndicators
+    
+    private List<ActivityIndicator> activityIndicators;
+    private ActivityIndicatorModel activityIndicatorModel;
 
-	private List<ActivityIndicator> activityIndicators = new List<ActivityIndicator>();
-    private int daysOffset = 0;
+    private int _daysOffset = 0;
+    private DateIndicatorService db;
 
-	public MainPage()
+
+
+    public MainPage()
 	{
 		InitializeComponent();
-
-        FillActivityGrid();
+        db = new DateIndicatorService();
+        FillActivityGridAsync();
     }
+
+
+    private async Task<IEnumerable<ActivityIndicatorModel>> GetActivityDates()
+    {
+        var activityDates = await Task.Run(() => DateIndicatorService.GetDates());
+
+        return activityDates;
+    }
+
+
+    private async Task<List<ActivityIndicator>> GetAllDatesAsync()
+    {
+        List<ActivityIndicator> test = new List<ActivityIndicator>(); 
+        var dateIndicators = await DateIndicatorService.GetDates();
+        //this.activityIndicators.AddRange(dateIndicators);
+
+        return test;
+    }
+
+    private async Task AddDate(DateTime dateTime)
+    {
+        await DateIndicatorService.AddDate(dateTime, ActivityState.PRESENT);
+    }
+    
+
     public enum DaysOfWeek
     {
         Mon = 0,
@@ -24,24 +55,13 @@ public partial class MainPage : ContentPage
         Sun = 6
     };
 
-    Dictionary<string, int> daysDictionary = new Dictionary<string, int>()
+    private void FillInDayLabels()
     {
-
-    };
-
-    public void FillActivityGrid()
-	{
-        int year = System.DateTime.Today.Year;
-        int month = System.DateTime.Today.Month;
-        int daysInMonth = System.DateTime.DaysInMonth(year, month);
-
-
-      
-
-        foreach (DaysOfWeek day in Enum.GetValues(typeof(DaysOfWeek))){
+        foreach (DaysOfWeek day in Enum.GetValues(typeof(DaysOfWeek)))
+        {
             Label dayLabel = new Label();
             dayLabel.Text = day.ToString();
-            dayLabel.TextColor = new Color(0,0,0);
+            dayLabel.TextColor = new Color(0, 0, 0);
             dayLabel.FontSize = 8;
 
             Thickness margin = dayLabel.Margin;
@@ -50,78 +70,47 @@ public partial class MainPage : ContentPage
 
             daysLabels.Add(dayLabel);
         }
-
-        checkIfMonday();
-
-
-        for (int i = 0; i < daysInMonth; i++)
-		{
-            ActivityIndicator activityIndicator = new ActivityIndicator();
-            activityIndicator.SetActivityStatus(ActivityState.ABSENT);
-
-            // New month begins -> Find 1st monday then take the 
-
-
-
-            DateTime date = new DateTime(year, month, (i+1));
-            activityIndicator.SetDate(date);
-
-
-            this.activityIndicators.Add(activityIndicator);
-            flexLayout.Add(activityIndicator.GetBoxIndicator());
-        }
     }
 
-    private void checkIfMonday()
-    {
-        int year = DateTime.Today.Year;
-        int month = DateTime.Today.Month;
+    public async void FillActivityGridAsync()
+	{
+        //int year = System.DateTime.Today.Year;
+        //int month = System.DateTime.Today.Month;
+        //int daysInMonth = System.DateTime.DaysInMonth(year, month);
+        this.activityIndicators = new List<ActivityIndicator>();
+        FillInDayLabels();
 
-        //First day of week (Friday)
-        DateTime firstDayOfMonth = new DateTime(year, month, 1);
-
-
-        //unavailable
-
-
-        this.daysOffset = (int)firstDayOfMonth.DayOfWeek-1;
-
-        int steps = daysOffset;
-
-        DateTime previousLastDateTime = new DateTime(year, month - 1, DateTime.DaysInMonth(year, month - 1));
-
-        //Set first days to unavailable
-        for (int i = steps; i > 1; i--)
+        var test = await GetActivityDates();
+        List<ActivityIndicatorModel> days = test.ToList();
+     
+        foreach (ActivityIndicatorModel day in days)
         {
-            ActivityIndicator activityIndicator = new ActivityIndicator();
-            activityIndicator.SetActivityStatus(ActivityState.PRESENT);
-
-
-            //Will it work in january first month, change to get previous month
-
-            //Past month end date
-            DateTime date = new DateTime(year, month, previousLastDateTime.Day-i);
-            activityIndicator.SetDate(date);
-
-            this.activityIndicators.Add(activityIndicator);
-            flexLayout.Add(activityIndicator.GetBoxIndicator());
-
+            ActivityIndicator dateIndicatorBox = new ActivityIndicator(day);
+            dateIndicatorBox.SetActivityStatus(ActivityState.PRESENT);
+            flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
+
+    }
+
+    private void SetIndicatorStatus(ActivityState state)
+    {
+        //TODO daysOffset depricated
+        activityIndicators[DateTime.Now.Day + this._daysOffset].SetActivityStatus(state);
     }
 
     private void Present_Clicked(object sender, EventArgs e)
     {
-        activityIndicators[DateTime.Now.Day + this.daysOffset].SetActivityStatus(ActivityState.PRESENT);
-	}
+        SetIndicatorStatus(ActivityState.PRESENT);
+    }
 
     private void RestDay_Clicked(object sender, EventArgs e)
     {
-        activityIndicators[DateTime.Now.Day - 1].SetActivityStatus(ActivityState.RESTDAY);
+        SetIndicatorStatus(ActivityState.RESTDAY);
     }
 
     private void Present_Absent(object sender, EventArgs e)
     {
-        activityIndicators[DateTime.Now.Day - 1].SetActivityStatus(ActivityState.ABSENT);
+        SetIndicatorStatus(ActivityState.ABSENT);
     }
 }
 

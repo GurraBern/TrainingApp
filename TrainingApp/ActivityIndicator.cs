@@ -2,26 +2,26 @@
 
 public class ActivityIndicator
 {
-    private DateTime timeOfDate;
-    private BoxView boxIndicator;
-    private ActivityState activityState;
+    private ActivityIndicatorModel _model;
+    private BoxView _boxIndicator;
 
-    public ActivityIndicator()
+    public ActivityIndicator(ActivityIndicatorModel model)
 	{
+        this._model = model;
         InitActivityBox();
     }
 
     private void InitActivityBox()
     {
-        this.boxIndicator = new BoxView();
-        SetIndicatorBoxColor(this.activityState);
-        boxIndicator.Opacity = 1;
-        boxIndicator.CornerRadius = 2;
-        boxIndicator.WidthRequest = 20;
-        boxIndicator.HeightRequest = 20;
-        boxIndicator.Margin = 1;
-        boxIndicator.VerticalOptions = LayoutOptions.Center;
-        boxIndicator.HorizontalOptions = LayoutOptions.Center;
+        this._boxIndicator = new BoxView();
+        SetIndicatorBoxColor(this._model.ActivityState);
+        _boxIndicator.Opacity = 1;
+        _boxIndicator.CornerRadius = 2;
+        _boxIndicator.WidthRequest = 20;
+        _boxIndicator.HeightRequest = 20;
+        _boxIndicator.Margin = 1;
+        _boxIndicator.VerticalOptions = LayoutOptions.Center;
+        _boxIndicator.HorizontalOptions = LayoutOptions.Center;
     }
 
 
@@ -35,23 +35,23 @@ public class ActivityIndicator
 
     public void SetActivityStatus(ActivityState activityState)
 	{
-        this.activityState = activityState;
-        this.boxIndicator.Color = SetIndicatorBoxColor(activityState);
+        this._model.ActivityState = activityState;
+        this._boxIndicator.Color = SetIndicatorBoxColor(activityState);
     }
 
     public void SetDate(DateTime date)
     {
-        this.timeOfDate = date;
+        this._model.Date = date;
     }
 
     public DateTime GetDate()
     {
-        return this.timeOfDate;
+        return this._model.Date;
     }
 
     public BoxView GetBoxIndicator()
     {
-        return this.boxIndicator;
+        return this._boxIndicator;
     }
 }
 
