@@ -2,61 +2,56 @@
 
 public class ActivityIndicator
 {
-    private DateTime timeOfDate;
-    private BoxView boxIndicator;
-    private ActivityState activityState;
+    private ActivityIndicatorModel _model;
+    private BoxView _boxIndicator;
 
-    public ActivityIndicator()
+    public ActivityIndicator(ActivityIndicatorModel model)
 	{
-        initActivityBox();
+        this._model = model;
+        InitActivityBox();
     }
 
-    private BoxView GetBoxIndicator()
+    private void InitActivityBox()
     {
-        return this.boxIndicator;
-    }
-
-    private void initActivityBox()
-    {
-        this.boxIndicator = new BoxView();
-        setIndicatorBoxColor(this.activityState);
-        boxIndicator.Opacity = 1;
-        boxIndicator.CornerRadius = 2;
-        boxIndicator.WidthRequest = 20;
-        boxIndicator.HeightRequest = 20;
-        boxIndicator.Margin = 1;
-        boxIndicator.VerticalOptions = LayoutOptions.Center;
-        boxIndicator.HorizontalOptions = LayoutOptions.Center;
+        this._boxIndicator = new BoxView();
+        SetIndicatorBoxColor(this._model.ActivityState);
+        _boxIndicator.Opacity = 1;
+        _boxIndicator.CornerRadius = 2;
+        _boxIndicator.WidthRequest = 20;
+        _boxIndicator.HeightRequest = 20;
+        _boxIndicator.Margin = 1;
+        _boxIndicator.VerticalOptions = LayoutOptions.Center;
+        _boxIndicator.HorizontalOptions = LayoutOptions.Center;
     }
 
 
     //TODO choose color palette
-    private Color setIndicatorBoxColor(ActivityState state) => state switch
+    private Color SetIndicatorBoxColor(ActivityState state) => state switch
     {
-        ActivityState.PRESENT => new Color(220, 220, 220),
-        ActivityState.RESTDAY => new Color(50, 50, 220),
-        _ => new Color(30, 120, 120)
+        ActivityState.PRESENT => new Color(152, 255, 79),
+        ActivityState.RESTDAY => new Color(255, 180, 80),
+        _ => new Color(0,0,0,0.3f)
     };
 
-    public void setActivityStatus(ActivityState activityState)
+    public void SetActivityStatus(ActivityState activityState)
 	{
-        this.activityState = activityState;
-        this.boxIndicator.Color = setIndicatorBoxColor(activityState);
+        this._model.ActivityState = activityState;
+        this._boxIndicator.Color = SetIndicatorBoxColor(activityState);
     }
 
-    public void setDate(DateTime date)
+    public void SetDate(DateTime date)
     {
-        this.timeOfDate = date;
+        this._model.Date = date.ToShortDateString();
     }
 
-    public DateTime getDate()
+    public string GetDate()
     {
-        return this.timeOfDate;
+        return this._model.Date;
     }
 
-    public BoxView getBoxIndicator()
+    public BoxView GetBoxIndicator()
     {
-        return this.boxIndicator;
+        return this._boxIndicator;
     }
 }
 

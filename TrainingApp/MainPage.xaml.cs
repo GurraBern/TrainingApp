@@ -1,41 +1,55 @@
-﻿namespace TrainingApp;
+﻿using TrainingApp.Services;
+
+namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-	//list width all dateIndicators
+    
+    private List<ActivityIndicator> activityIndicators;
+    private ActivityIndicatorModel activityIndicatorModel;
 
-	private List<ActivityIndicator> activityIndicators = new List<ActivityIndicator>();
+    private int _daysOffset = 0;
+    private DateIndicatorService db;
 
-	public MainPage()
+
+
+    public MainPage()
 	{
-		InitializeComponent();
-
-        fillActivityGrid();
+        StartUpAsync();
     }
-    public enum DayOfWeek
+
+    private async Task StartUpAsync()
     {
-        Mon = 0,
-        Tue = 1,
-        Wed = 2,
-        Thu = 3,
-        Fri = 4,
-        Sat = 5,
-        Sun = 6
+        InitializeComponent();
+        db = new DateIndicatorService();
+        //await FillMonthAsync();
+        FillActivityGridAsync();
+    }
 
-    };
+    private async Task FillMonthAsync()
+    {
+        await DateIndicatorService.AddDatesMonth(DateTime.Today);
+    }
 
-    public void fillActivityGrid()
-	{
-        int year = System.DateTime.Today.Year;
-        int month = System.DateTime.Today.Month;
-        int daysInMonth = System.DateTime.DaysInMonth(year, month);
+    private async Task<IEnumerable<ActivityIndicatorModel>> GetActivityDates()
+    {
+        //var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
+        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
+        return activityDatesEnum;
+    }
 
+    private async Task AddDate(DateTime dateTime)
+    {
+        await DateIndicatorService.AddDate(dateTime, ActivityState.PRESENT);
+    }
 
-      
-
-        foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek))){
+    private void FillInDayLabels()
+    {
+        foreach (DaysOfWeek day in Enum.GetValues(typeof(DaysOfWeek)))
+        {
             Label dayLabel = new Label();
             dayLabel.Text = day.ToString();
+            dayLabel.TextColor = new Color(0, 0, 0);
             dayLabel.FontSize = 8;
 
             Thickness margin = dayLabel.Margin;
@@ -44,33 +58,65 @@ public partial class MainPage : ContentPage
 
             daysLabels.Add(dayLabel);
         }
+    }
 
-        for (int i = 0; i < daysInMonth; i++)
-		{
-            ActivityIndicator activityIndicator = new ActivityIndicator();
+    public async void FillActivityGridAsync()
+	{
+        //int year = System.DateTime.Today.Year;
+        //int month = System.DateTime.Today.Month;
+        //int daysInMonth = System.DateTime.DaysInMonth(year, month);
 
-            DateTime date = new DateTime(year, month, (i+1));
-            activityIndicator.setDate(date);
+        //TODO should be a XAML Component?
+        FillInDayLabels();
 
+        RefreshActivityGridAsync();
+    }
 
-            this.activityIndicators.Add(activityIndicator);
-            flexLayout.Add(activityIndicator.getBoxIndicator());
+    private async Task SetIndicatorStatusAsync(ActivityState state)
+    {
+        await DateIndicatorService.UpdateDate(DateTime.Today, state);
+        // TODO refresh
+
+        RefreshActivityGridAsync();
+    }
+
+    private async Task RefreshActivityGridAsync()
+    {
+
+        flexLayout.Clear();
+        var dates = await GetActivityDates();
+        List<ActivityIndicatorModel> activityDates = dates.ToList();
+        foreach (ActivityIndicatorModel activityDate in activityDates)
+        {
+            ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
+            dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
+            flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
     }
 
-	private void Present_Clicked(object sender, EventArgs e)
-	{
-		activityIndicators[0].setActivityStatus(ActivityState.PRESENT);
-	}
-
-    private void RestDay_Clicked(object sender, EventArgs e)
+    private async void Present_Clicked(object sender, EventArgs e)
     {
-        activityIndicators[0].setActivityStatus(ActivityState.RESTDAY);
+        await SetIndicatorStatusAsync(ActivityState.PRESENT);
     }
 
-    private void Present_Absent(object sender, EventArgs e)
+    private async void RestDay_Clicked(object sender, EventArgs e)
     {
-        activityIndicators[0].setActivityStatus(ActivityState.ABSENT);
+        await SetIndicatorStatusAsync(ActivityState.RESTDAY);
     }
+
+    private async void Present_Absent(object sender, EventArgs e)
+    {
+        await SetIndicatorStatusAsync(ActivityState.ABSENT);
+    }
+
+    public enum DaysOfWeek
+    {
+        Mon = 0,
+        Tue = 1,
+        Wed = 2,
+        Thu = 3,
+        Fri = 4,
+        Sat = 5,
+        Sun = 6
+    };
 }
-
