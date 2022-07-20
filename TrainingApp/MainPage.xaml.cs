@@ -34,7 +34,7 @@ public partial class MainPage : ContentPage
     private async Task<IEnumerable<ActivityIndicatorModel>> GetActivityDates()
     {
         //var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
-        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDatesAndFill());
+        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
         return activityDatesEnum;
     }
 

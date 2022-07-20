@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-using SQLite;
+﻿using SQLite;
 
 namespace TrainingApp.Services;
 
@@ -20,13 +19,15 @@ public class DateIndicatorService
         await db.CreateTableAsync<ActivityIndicatorModel>();
 
 
+
+        //await db.DeleteAllAsync<ActivityIndicatorModel>();
+
         //TODO end of year bug
-        DateTime previousMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month-1, 1);
-        await AddDatesMonth(previousMonth);
-        await AddDatesMonth(previousMonth.AddMonths(1));
+        //DateTime previousMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        //await AddDatesMonth(previousMonth);
+        //await AddDatesMonth(previousMonth.AddMonths(1));
 
         //Remove
-        //await db.DeleteAllAsync<ActivityIndicatorModel>();
         //await AddDatesMonth(new DateTime(2022, 7, 25));
     }
 
@@ -47,9 +48,11 @@ public class DateIndicatorService
     {
         await Init();
 
+        var dateString = date.ToShortDateString();
+
         var activityIndicator = new ActivityIndicatorModel()
         {
-            Date = date,
+            Date = dateString,
             ActivityState = activityState
         };
 
@@ -58,8 +61,9 @@ public class DateIndicatorService
 
     public static async Task UpdateDate(DateTime date, ActivityState activityState)
     {
+        var dateShort = date.ToShortDateString();
 
-        var activityIndicatorObj = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(date)).FirstOrDefaultAsync();
+        var activityIndicatorObj = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
         activityIndicatorObj.ActivityState = activityState;
         await db.UpdateAsync(activityIndicatorObj);
     }
@@ -74,7 +78,6 @@ public class DateIndicatorService
     public static async Task<IEnumerable<ActivityIndicatorModel>> GetDates()
     {
         await Init();
-
         var dates = await db.Table<ActivityIndicatorModel>().ToListAsync();
 
 
@@ -85,28 +88,41 @@ public class DateIndicatorService
     {
         var dates = GetDates();
         var firstDate = dates.Result.FirstOrDefault();
-        int offset = (int)firstDate.Date.DayOfWeek - 1;
 
-        var daysInMonth = DateTime.DaysInMonth(firstDate.Date.Year, firstDate.Date.Month);
 
-        //Get from previous month last days
-        /* var previousDates = await db.Table<ActivityIndicatorModel>()
-             .Where(v => v.Date.Day > 3)
-             .FirstOrDefaultAsync();
+        //Check specifik date from string
+        //int offset = (int)firstDate.Date.DayOfWeek - 1;
+
+        //var daysInMonth = DateTime.DaysInMonth(firstDate.Date.Year, firstDate.Date.Month);
+
+        //var  tet = QueryValuations(db.GetConnection(), firstDate.Date).ToList();
+
+
+        //Get from previous month last days, interval between the last day and the offset
+        /*var previousDates = await db.Table<ActivityIndicatorModel>()
+            .Where(v => v.Date.).FirstOrDefaultAsync();
         */
 
-       // DateTime testtt = DateTime.Today;
-        var bruh = DateTime.Today.ToShortDateString();
-        //"2022-07-20"
-        /*var activity = await db.Table<ActivityIndicatorModel>()
-        .Where(p => p.Date.ToShortDateString().Equals("2022-07-20")).ToListAsync();
-        */
-        var huh = await db.Table<ActivityIndicatorModel>().Where(p => p.Date.ToShortDateString().Equals("2022-07-20")).ToListAsync();
         //Join together
+
 
         var test = 1;
 
         return (IEnumerable<ActivityIndicatorModel>)dates;
+    }
+
+    public static IEnumerable<ActivityIndicatorModel> QueryValuations(SQLiteConnection db, string stock)
+    {
+        return db.Query<ActivityIndicatorModel>("SELECT* FROM test WHERE joined_date BETWEEN '2022-07-01' AND '2022-07/10'");
+    }
+
+    private string SplitToDay(string date)
+    {
+        var splitString = date.Split("-");
+
+        string dayString = splitString[splitString.Count()-1];
+
+        return dayString;
     }
 
     public enum DaysOfWeek

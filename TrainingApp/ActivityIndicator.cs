@@ -41,10 +41,10 @@ public class ActivityIndicator
 
     public void SetDate(DateTime date)
     {
-        this._model.Date = date;
+        this._model.Date = date.ToShortDateString();
     }
 
-    public DateTime GetDate()
+    public string GetDate()
     {
         return this._model.Date;
     }
