@@ -1,18 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TrainingApp.MainPage">
+             x:Class="TrainingApp.MainPage"
+             BackgroundColor="White">
 
-    <VerticalStackLayout BackgroundColor="White">
-    <!--should be dynamic with months-->
-        <FlexLayout x:Name="daysLabels" WidthRequest="180" HeightRequest="10" VerticalOptions="Start" HorizontalOptions="Center" Margin="4,30,0,0"  Wrap="Wrap"></FlexLayout>
-        <FlexLayout x:Name="flexLayout" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center"  Wrap="Wrap"></FlexLayout>
 
-        <HorizontalStackLayout Margin="50">
+
+
+    <FlexLayout x:Name="flexLayout" MaximumWidthRequest="210" MaximumHeightRequest="150" Padding="100,0,100,0" Margin="50" Wrap="Wrap" >
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="01"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="02"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="03"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="04"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="05"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="06"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="07"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="08"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="09"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="10"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="11"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="12"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="13"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="14"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="15"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="16"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="17"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="18"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="19"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="20"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="21"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="22"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="23"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="24"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="25"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="26"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="27"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="28"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="29"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="30"/>
+        <Button FontAttributes="Bold" FontSize="14" Padding="0" WidthRequest="30" HeightRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="31"/>
+    </FlexLayout>
+
+    <!--<VerticalStackLayout>
+
+
+        <ContentView>
+            <FlexLayout MaximumWidthRequest="210" MaximumHeightRequest="150" Padding="100,0,100,0" Margin="50" Wrap="Wrap">
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="black" TextColor="White" Text="01"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="02"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="03"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="04"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="05"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="06"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="07"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="08"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="09"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="10"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="11"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="12"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="13"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="14"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="15"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="16"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="17"/>
+
+
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="01"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="02"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="03"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="04"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="05"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="06"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="07"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="08"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="09"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="10"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="11"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="12"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="13"/>
+                <Button FontAttributes="Bold" FontSize="14" MinimumWidthRequest="30" MinimumHeightRequest="30" MaximumHeightRequest="30" MaximumWidthRequest="30" CornerRadius="5" Background="Orange" TextColor="White" Text="14"/>
+            </FlexLayout>
+        </ContentView>
+
+
+
+
+
+
+        --><!--<FlexLayout x:Name="daysLabels" WidthRequest="180" HeightRequest="10" VerticalOptions="Start" HorizontalOptions="Center" Margin="4,30,0,0"  Wrap="Wrap"></FlexLayout>
+        <FlexLayout x:Name="flexLayout" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,0,0,0"  Wrap="Wrap"></FlexLayout>
+
+        <HorizontalStackLayout>
             <Button Clicked="Present_Clicked"  Text="Went To Gym"></Button>
             <Button Clicked="RestDay_Clicked" Text="Rest Day"></Button>
             <Button Clicked="Present_Absent" Text="Didnt go"></Button>
 
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+        </HorizontalStackLayout>--><!--
+        
+        
+    </VerticalStackLayout>-->
+
+    
 </ContentPage>

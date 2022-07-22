@@ -4,9 +4,8 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    
     private List<ActivityIndicator> activityIndicators;
-    private ActivityIndicatorModel activityIndicatorModel;
+    private Activity activityIndicatorModel;
 
     private int _daysOffset = 0;
     private DateIndicatorService db;
@@ -31,7 +30,7 @@ public partial class MainPage : ContentPage
         await DateIndicatorService.AddDatesMonth(DateTime.Today);
     }
 
-    private async Task<IEnumerable<ActivityIndicatorModel>> GetActivityDates()
+    private async Task<IEnumerable<Activity>> GetActivityDates()
     {
         //var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
         var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
@@ -56,7 +55,7 @@ public partial class MainPage : ContentPage
             margin.Right = 5;
             dayLabel.Margin = margin;
 
-            daysLabels.Add(dayLabel);
+            //daysLabels.Add(dayLabel);
         }
     }
 
@@ -83,14 +82,14 @@ public partial class MainPage : ContentPage
     private async Task RefreshActivityGridAsync()
     {
 
-        flexLayout.Clear();
+        //flexLayout.Clear();
         var dates = await GetActivityDates();
-        List<ActivityIndicatorModel> activityDates = dates.ToList();
-        foreach (ActivityIndicatorModel activityDate in activityDates)
+        List<Activity> activityDates = dates.ToList();
+        foreach (Activity activityDate in activityDates)
         {
             ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
-            flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
+            //flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
     }
 

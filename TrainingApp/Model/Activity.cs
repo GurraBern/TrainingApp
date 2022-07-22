@@ -1,7 +1,7 @@
 ﻿using System;
 using SQLite;
 
-public class ActivityIndicatorModel
+public class Activity
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }

@@ -2,15 +2,17 @@
 
 public class ActivityIndicator
 {
-    private ActivityIndicatorModel _model;
+    private Activity _model;
     private BoxView _boxIndicator;
 
-    public ActivityIndicator(ActivityIndicatorModel model)
+    public ActivityIndicator(Activity model)
 	{
         this._model = model;
         InitActivityBox();
     }
 
+
+    //TODO make in xaml only
     private void InitActivityBox()
     {
         this._boxIndicator = new BoxView();
@@ -28,30 +30,30 @@ public class ActivityIndicator
     //TODO choose color palette
     private Color SetIndicatorBoxColor(ActivityState state) => state switch
     {
-        ActivityState.PRESENT => new Color(152, 255, 79),
-        ActivityState.RESTDAY => new Color(255, 180, 80),
-        _ => new Color(0,0,0,0.3f)
+        ActivityState.PRESENT => new Color(116, 255, 112),
+        ActivityState.RESTDAY => new Color(255, 203, 76),
+        _ => new Color(0,0,0,0.1f)
     };
 
     public void SetActivityStatus(ActivityState activityState)
 	{
-        this._model.ActivityState = activityState;
-        this._boxIndicator.Color = SetIndicatorBoxColor(activityState);
+        _model.ActivityState = activityState;
+        _boxIndicator.Color = SetIndicatorBoxColor(activityState);
     }
 
     public void SetDate(DateTime date)
     {
-        this._model.Date = date.ToShortDateString();
+        _model.Date = date.ToShortDateString();
     }
 
     public string GetDate()
     {
-        return this._model.Date;
+        return _model.Date;
     }
 
     public BoxView GetBoxIndicator()
     {
-        return this._boxIndicator;
+        return _boxIndicator;
     }
 }
 
