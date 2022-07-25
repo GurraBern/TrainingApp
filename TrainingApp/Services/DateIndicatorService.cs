@@ -122,15 +122,6 @@ public class DateIndicatorService
         return db.Query<Activity>("SELECT* FROM test WHERE joined_date BETWEEN '2022-07-01' AND '2022-07/10'");
     }
 
-    private string SplitToDay(string date)
-    {
-        var splitString = date.Split("-");
-
-        string dayString = splitString[splitString.Count()-1];
-
-        return dayString;
-    }
-
     public enum DaysOfWeek
     {
         Mon = 0,

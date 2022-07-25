@@ -46,16 +46,26 @@ public partial class MainPage : ContentPage
     {
         foreach (DaysOfWeek day in Enum.GetValues(typeof(DaysOfWeek)))
         {
-            Label dayLabel = new Label();
+            Button dayLabel = new Button();
             dayLabel.Text = day.ToString();
-            dayLabel.TextColor = new Color(0, 0, 0);
-            dayLabel.FontSize = 8;
+            dayLabel.FontAttributes = FontAttributes.Bold;
+            dayLabel.FontSize = 12;
+            dayLabel.Padding = 0;
+            dayLabel.WidthRequest = 30;
 
-            Thickness margin = dayLabel.Margin;
-            margin.Right = 5;
-            dayLabel.Margin = margin;
+            dayLabel.CornerRadius = 5;
+            dayLabel.TextColor = Color.FromRgb(0, 0, 0);
+           
 
-            //daysLabels.Add(dayLabel);
+            //Thickness margin = dayLabel.Margin;
+            //margin.Right = 5;
+            //dayLabel.Margin = margin;
+
+            daysLabels.Add(dayLabel);
+
+
+
+          
         }
     }
 
@@ -82,14 +92,14 @@ public partial class MainPage : ContentPage
     private async Task RefreshActivityGridAsync()
     {
 
-        //flexLayout.Clear();
+        flexLayout.Clear();
         var dates = await GetActivityDates();
         List<Activity> activityDates = dates.ToList();
         foreach (Activity activityDate in activityDates)
         {
             ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
-            //flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
+            flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
     }
 
