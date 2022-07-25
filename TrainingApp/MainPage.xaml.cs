@@ -29,21 +29,28 @@ public partial class MainPage : ContentPage
         await DateIndicatorService.AddDatesMonth(DateTime.Today);
     }
 
+    private async Task<IEnumerable<Activity>> GetMonthActivityDates()
+    {
+        var daysInMonth = DateTime.DaysInMonth(DateTime.Today.Year,DateTime.Today.Month);
+        var lastDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, daysInMonth);
+        var firstDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        var activityDatesEnum = await GetIntervalDates(firstDay.ToShortDateString(), lastDay.ToShortDateString());
+
+        return activityDatesEnum;
+    }
+
     private async Task<IEnumerable<Activity>> GetActivityDates()
     {
-        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
+        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetActivityDates());
+
         return activityDatesEnum;
     }
 
     private async Task<IEnumerable<Activity>> GetIntervalDates(string startDate, string endDate)
     {
-        var dates = await Task.Run(() => DateIndicatorService.QueryValuationsAsync(startDate, endDate));
-        return dates;
-    }
+        var dates = await Task.Run(() => DateIndicatorService.GetActivityDatesBetween(startDate, endDate));
 
-    private async Task AddDate(DateTime dateTime)
-    {
-        await DateIndicatorService.AddDate(dateTime, ActivityState.PRESENT);
+        return dates;
     }
 
     private void FillInDayLabels()
@@ -56,29 +63,15 @@ public partial class MainPage : ContentPage
             dayLabel.FontSize = 12;
             dayLabel.Padding = 0;
             dayLabel.WidthRequest = 30;
-
             dayLabel.CornerRadius = 5;
             dayLabel.TextColor = Color.FromRgb(0, 0, 0);
-           
-
-            //Thickness margin = dayLabel.Margin;
-            //margin.Right = 5;
-            //dayLabel.Margin = margin;
-
             daysLabels.Add(dayLabel);
-
         }
     }
 
-    public async void FillActivityGridAsync()
+    private async void FillActivityGridAsync()
 	{
-        //int year = System.DateTime.Today.Year;
-        //int month = System.DateTime.Today.Month;
-        //int daysInMonth = System.DateTime.DaysInMonth(year, month);
-
-        //TODO should be a XAML Component?
         FillInDayLabels();
-
         await RefreshActivityGrid();
     }
 
@@ -90,24 +83,32 @@ public partial class MainPage : ContentPage
 
     private async Task RefreshActivityGrid()
     {
-
         flexLayout.Clear();
+        List<Activity> activityDates = new List<Activity>();
 
-        //Get last month final days if not monday
-        var dates = await GetIntervalDates("2022-07-20","2022-07-31");
+        var previousActivity = await getPreviousMonth() as List<Activity>;
+        var monthActivity = await GetMonthActivityDates() as List<Activity>;
 
-        var datesee = await GetActivityDates()
+        activityDates.AddRange(previousActivity);
+        activityDates.AddRange(monthActivity);
 
-
-
-        List<Activity> activityDates = dates.ToList();
         foreach (Activity activityDate in activityDates)
         {
             ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
             flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
-
         }
+    }
+
+    private async Task<IEnumerable<Activity>> getPreviousMonth()
+    {
+        //TODO Jan Proof?
+        var endDatePreviousMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month - 1));
+        var firstDayOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).DayOfWeek;
+        var offsetDays = (int) firstDayOfMonth - 2;
+        DateTime offsetDate = new DateTime(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
+
+        return await GetIntervalDates(offsetDate.ToShortDateString(), endDatePreviousMonth.ToShortDateString());
     }
 
     private async void Present_Clicked(object sender, EventArgs e)

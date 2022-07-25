@@ -18,28 +18,10 @@ public class DateIndicatorService
         db = new SQLiteAsyncConnection(databasePath);
         await db.CreateTableAsync<Activity>();
 
-        if (!GetDates().Result.Any())
+        if (!GetActivityDates().Result.Any())
         {
             await AddDatesMonth(DateTime.Today);
         }
-
-
-        //await db.DeleteAllAsync<ActivityIndicatorModel>();
-
-        //TODO end of year bug
-        //DateTime previousMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-        //await AddDatesMonth(previousMonth);
-        //await AddDatesMonth(previousMonth.AddMonths(1));
-
-        //Remove
-        //await AddDatesMonth(new DateTime(2022, 7, 25));
-    }
-
-
-    //TODO works?
-    public Task<List<Activity>> GetItemsFromDateAsync(DateTime Start, DateTime end)
-    {
-        return db.QueryAsync<Activity>("SELECT * FROM [Activity] WHERE [Start] >= ? or [End]<= ?", Start, end);
     }
 
     public static async Task AddDatesMonth(DateTime dateTime)
@@ -87,7 +69,7 @@ public class DateIndicatorService
         await db.DeleteAsync<Activity>(id);
     }
 
-    public static async Task<IEnumerable<Activity>> GetDates()
+    public static async Task<IEnumerable<Activity>> GetActivityDates()
     {
         await Init();
         var dates = await db.Table<Activity>().ToListAsync();
@@ -95,7 +77,7 @@ public class DateIndicatorService
         return dates;
     }
 
-    public static async Task<IEnumerable<Activity>> GetDates(string startDate, string endDate)
+    public static async Task<IEnumerable<Activity>> GetActivityDatesBetween(string startDate, string endDate)
     {
         await Init();
         var dbConnection = db.GetConnection();
