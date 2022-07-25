@@ -16,9 +16,9 @@ public class DateIndicatorService
 
         var databasePath = Path.Combine(FileSystem.AppDataDirectory, "ActivityDates.db");
         db = new SQLiteAsyncConnection(databasePath);
-        await db.CreateTableAsync<ActivityIndicatorModel>();
+        await db.CreateTableAsync<Activity>();
 
-
+ 
 
         //await db.DeleteAllAsync<ActivityIndicatorModel>();
 
@@ -29,6 +29,13 @@ public class DateIndicatorService
 
         //Remove
         //await AddDatesMonth(new DateTime(2022, 7, 25));
+    }
+
+
+    //TODO works?
+    public Task<List<Activity>> GetItemsFromDateAsync(DateTime Start, DateTime end)
+    {
+        return db.QueryAsync<Activity>("SELECT * FROM [Activity] WHERE [Start] >= ? or [End]<= ?", Start, end);
     }
 
     public static async Task AddDatesMonth(DateTime dateTime)
@@ -50,7 +57,7 @@ public class DateIndicatorService
 
         var dateString = date.ToShortDateString();
 
-        var activityIndicator = new ActivityIndicatorModel()
+        var activityIndicator = new Activity()
         {
             Date = dateString,
             ActivityState = activityState
@@ -63,7 +70,7 @@ public class DateIndicatorService
     {
         var dateShort = date.ToShortDateString();
 
-        var activityIndicatorObj = await db.Table<ActivityIndicatorModel>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
+        var activityIndicatorObj = await db.Table<Activity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
         activityIndicatorObj.ActivityState = activityState;
         await db.UpdateAsync(activityIndicatorObj);
     }
@@ -72,19 +79,18 @@ public class DateIndicatorService
     {
         await Init();
 
-        await db.DeleteAsync<ActivityIndicatorModel>(id);
+        await db.DeleteAsync<Activity>(id);
     }
 
-    public static async Task<IEnumerable<ActivityIndicatorModel>> GetDates()
+    public static async Task<IEnumerable<Activity>> GetDates()
     {
         await Init();
-        var dates = await db.Table<ActivityIndicatorModel>().ToListAsync();
-
+        var dates = await db.Table<Activity>().ToListAsync();
 
         return dates;
     }
 
-    public static async Task<IEnumerable<ActivityIndicatorModel>> GetDatesAndFill()
+    public static async Task<IEnumerable<Activity>> GetDatesAndFill()
     {
         var dates = GetDates();
         var firstDate = dates.Result.FirstOrDefault();
@@ -108,21 +114,12 @@ public class DateIndicatorService
 
         var test = 1;
 
-        return (IEnumerable<ActivityIndicatorModel>)dates;
+        return (IEnumerable<Activity>)dates;
     }
 
-    public static IEnumerable<ActivityIndicatorModel> QueryValuations(SQLiteConnection db, string stock)
+    public static IEnumerable<Activity> QueryValuations(SQLiteConnection db, string stock)
     {
-        return db.Query<ActivityIndicatorModel>("SELECT* FROM test WHERE joined_date BETWEEN '2022-07-01' AND '2022-07/10'");
-    }
-
-    private string SplitToDay(string date)
-    {
-        var splitString = date.Split("-");
-
-        string dayString = splitString[splitString.Count()-1];
-
-        return dayString;
+        return db.Query<Activity>("SELECT* FROM test WHERE joined_date BETWEEN '2022-07-01' AND '2022-07/10'");
     }
 
     public enum DaysOfWeek

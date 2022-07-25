@@ -1,57 +1,84 @@
-﻿using System;
+﻿using Microsoft.Maui.Graphics.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 public class ActivityIndicator
 {
-    private ActivityIndicatorModel _model;
-    private BoxView _boxIndicator;
+    private Activity _model;
+    private Button _boxIndicator;
 
-    public ActivityIndicator(ActivityIndicatorModel model)
-	{
-        this._model = model;
-        InitActivityBox();
-    }
-
-    private void InitActivityBox()
+    public ActivityIndicator(Activity model)
     {
-        this._boxIndicator = new BoxView();
-        SetIndicatorBoxColor(this._model.ActivityState);
-        _boxIndicator.Opacity = 1;
-        _boxIndicator.CornerRadius = 2;
-        _boxIndicator.WidthRequest = 20;
-        _boxIndicator.HeightRequest = 20;
-        _boxIndicator.Margin = 1;
-        _boxIndicator.VerticalOptions = LayoutOptions.Center;
-        _boxIndicator.HorizontalOptions = LayoutOptions.Center;
+        this._model = model;
+        InitActivityBoxNew();
     }
+
+    private void InitActivityBoxNew()
+    {
+        this._boxIndicator = new Button();
+        SetIndicatorBoxColor(this._model.ActivityState);
+
+        _boxIndicator.FontAttributes = FontAttributes.Bold;
+        _boxIndicator.FontSize = 14;
+        _boxIndicator.Padding = 0;
+        _boxIndicator.WidthRequest = 30;
+        _boxIndicator.HeightRequest = 30;
+        _boxIndicator.CornerRadius = 5;
+        _boxIndicator.TextColor = Color.FromRgb(255,255,255);
+        _boxIndicator.Text = SplitToDay(_model.Date);
+
+    }
+
+
+    //TODO make in xaml only
+    //private void InitActivityBox()
+    //{
+    //    this._boxIndicator = new BoxView();
+    //    SetIndicatorBoxColor(this._model.ActivityState);
+    //    _boxIndicator.Opacity = 1;
+    //    _boxIndicator.CornerRadius = 2;
+    //    _boxIndicator.WidthRequest = 20;
+    //    _boxIndicator.HeightRequest = 20;
+    //    _boxIndicator.Margin = 1;
+    //    _boxIndicator.VerticalOptions = LayoutOptions.Center;
+    //    _boxIndicator.HorizontalOptions = LayoutOptions.Center;
+    //}
 
 
     //TODO choose color palette
     private Color SetIndicatorBoxColor(ActivityState state) => state switch
     {
-        ActivityState.PRESENT => new Color(152, 255, 79),
-        ActivityState.RESTDAY => new Color(255, 180, 80),
-        _ => new Color(0,0,0,0.3f)
+        ActivityState.PRESENT => new Color(116, 255, 112),
+        ActivityState.RESTDAY => new Color(255, 203, 76),
+        _ => new Color(0, 0, 0, 0.1f)
     };
 
     public void SetActivityStatus(ActivityState activityState)
-	{
-        this._model.ActivityState = activityState;
-        this._boxIndicator.Color = SetIndicatorBoxColor(activityState);
+    {
+        _model.ActivityState = activityState;
+        _boxIndicator.BackgroundColor = SetIndicatorBoxColor(activityState);
     }
 
     public void SetDate(DateTime date)
     {
-        this._model.Date = date.ToShortDateString();
+        _model.Date = date.ToShortDateString();
+    }
+    private string SplitToDay(string date)
+    {
+        var splitString = date.Split("-");
+
+        string dayString = splitString[splitString.Count() - 1];
+
+        return dayString;
     }
 
     public string GetDate()
     {
-        return this._model.Date;
+        return _model.Date;
     }
 
-    public BoxView GetBoxIndicator()
+    public Button GetBoxIndicator()
     {
-        return this._boxIndicator;
+        return _boxIndicator;
     }
 }
 
