@@ -18,7 +18,11 @@ public class DateIndicatorService
         db = new SQLiteAsyncConnection(databasePath);
         await db.CreateTableAsync<Activity>();
 
- 
+        if (!GetDates().Result.Any())
+        {
+            await AddDatesMonth(DateTime.Today);
+        }
+
 
         //await db.DeleteAllAsync<ActivityIndicatorModel>();
 
@@ -70,6 +74,8 @@ public class DateIndicatorService
     {
         var dateShort = date.ToShortDateString();
 
+
+        //TODO if null throw exeption
         var activityIndicatorObj = await db.Table<Activity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
         activityIndicatorObj.ActivityState = activityState;
         await db.UpdateAsync(activityIndicatorObj);
@@ -78,7 +84,6 @@ public class DateIndicatorService
     public static async Task RemoveDate(int id)
     {
         await Init();
-
         await db.DeleteAsync<Activity>(id);
     }
 
@@ -90,36 +95,12 @@ public class DateIndicatorService
         return dates;
     }
 
-    public static async Task<IEnumerable<Activity>> GetDatesAndFill()
+    public static async Task<IEnumerable<Activity>> GetDates(string startDate, string endDate)
     {
-        var dates = GetDates();
-        var firstDate = dates.Result.FirstOrDefault();
+        await Init();
+        var dbConnection = db.GetConnection();
 
-
-        //Check specifik date from string
-        //int offset = (int)firstDate.Date.DayOfWeek - 1;
-
-        //var daysInMonth = DateTime.DaysInMonth(firstDate.Date.Year, firstDate.Date.Month);
-
-        //var  tet = QueryValuations(db.GetConnection(), firstDate.Date).ToList();
-
-
-        //Get from previous month last days, interval between the last day and the offset
-        /*var previousDates = await db.Table<ActivityIndicatorModel>()
-            .Where(v => v.Date.).FirstOrDefaultAsync();
-        */
-
-        //Join together
-
-
-        var test = 1;
-
-        return (IEnumerable<Activity>)dates;
-    }
-
-    public static IEnumerable<Activity> QueryValuations(SQLiteConnection db, string stock)
-    {
-        return db.Query<Activity>("SELECT* FROM test WHERE joined_date BETWEEN '2022-07-01' AND '2022-07/10'");
+        return dbConnection.Query<Activity>($"SELECT * FROM Activity WHERE date BETWEEN '{startDate}' AND '{endDate}'", startDate, endDate);
     }
 
     public enum DaysOfWeek

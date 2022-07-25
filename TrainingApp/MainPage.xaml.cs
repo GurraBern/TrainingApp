@@ -21,7 +21,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         db = new DateIndicatorService();
-        //await FillMonthAsync();
         FillActivityGridAsync();
     }
 
@@ -32,9 +31,14 @@ public partial class MainPage : ContentPage
 
     private async Task<IEnumerable<Activity>> GetActivityDates()
     {
-        //var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
         var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
         return activityDatesEnum;
+    }
+
+    private async Task<IEnumerable<Activity>> GetIntervalDates(string startDate, string endDate)
+    {
+        var dates = await Task.Run(() => DateIndicatorService.QueryValuationsAsync(startDate, endDate));
+        return dates;
     }
 
     private async Task AddDate(DateTime dateTime)
@@ -63,9 +67,6 @@ public partial class MainPage : ContentPage
 
             daysLabels.Add(dayLabel);
 
-
-
-          
         }
     }
 
@@ -78,28 +79,34 @@ public partial class MainPage : ContentPage
         //TODO should be a XAML Component?
         FillInDayLabels();
 
-        RefreshActivityGridAsync();
+        await RefreshActivityGrid();
     }
 
     private async Task SetIndicatorStatusAsync(ActivityState state)
     {
         await DateIndicatorService.UpdateDate(DateTime.Today, state);
-        // TODO refresh
-
-        RefreshActivityGridAsync();
+        await RefreshActivityGrid();
     }
 
-    private async Task RefreshActivityGridAsync()
+    private async Task RefreshActivityGrid()
     {
 
         flexLayout.Clear();
-        var dates = await GetActivityDates();
+
+        //Get last month final days if not monday
+        var dates = await GetIntervalDates("2022-07-20","2022-07-31");
+
+        var datesee = await GetActivityDates()
+
+
+
         List<Activity> activityDates = dates.ToList();
         foreach (Activity activityDate in activityDates)
         {
             ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
             flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
+
         }
     }
 
