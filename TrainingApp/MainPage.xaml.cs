@@ -4,10 +4,6 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    private List<ActivityIndicator> activityIndicators;
-    private Activity activityIndicatorModel;
-
-    private int _daysOffset = 0;
     private DateIndicatorService db;
 
 
@@ -21,25 +17,42 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         db = new DateIndicatorService();
-        //await FillMonthAsync();
         FillActivityGridAsync();
     }
 
+    //OLD
+    //private async Task FillMonthAsync()
+    //{
+    //    await DateIndicatorService.AddDatesMonth(DateTime.Today);
+    //}
+
     private async Task FillMonthAsync()
     {
-        await DateIndicatorService.AddDatesMonth(DateTime.Today);
+        await DateIndicatorService.AddDatesToMonth(DateTime.Today);
+    }
+    
+    private async Task<IEnumerable<Activity>> GetMonthActivityDates()
+    {
+        var daysInMonth = DateTime.DaysInMonth(DateTime.Today.Year,DateTime.Today.Month);
+        var lastDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, daysInMonth);
+        var firstDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+        var activityDatesEnum = await GetIntervalDates(firstDay.ToShortDateString(), lastDay.ToShortDateString());
+
+        return activityDatesEnum;
     }
 
     private async Task<IEnumerable<Activity>> GetActivityDates()
     {
-        //var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
-        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetDates());
+        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetActivityDates());
+
         return activityDatesEnum;
     }
 
-    private async Task AddDate(DateTime dateTime)
+    private async Task<IEnumerable<Activity>> GetIntervalDates(string startDate, string endDate)
     {
-        await DateIndicatorService.AddDate(dateTime, ActivityState.PRESENT);
+        var dates = await Task.Run(() => DateIndicatorService.GetActivityDatesBetween(startDate, endDate));
+
+        return dates;
     }
 
     private void FillInDayLabels()
@@ -52,55 +65,52 @@ public partial class MainPage : ContentPage
             dayLabel.FontSize = 12;
             dayLabel.Padding = 0;
             dayLabel.WidthRequest = 30;
-
             dayLabel.CornerRadius = 5;
             dayLabel.TextColor = Color.FromRgb(0, 0, 0);
-           
-
-            //Thickness margin = dayLabel.Margin;
-            //margin.Right = 5;
-            //dayLabel.Margin = margin;
-
             daysLabels.Add(dayLabel);
-
-
-
-          
         }
     }
 
-    public async void FillActivityGridAsync()
+    private async void FillActivityGridAsync()
 	{
-        //int year = System.DateTime.Today.Year;
-        //int month = System.DateTime.Today.Month;
-        //int daysInMonth = System.DateTime.DaysInMonth(year, month);
-
-        //TODO should be a XAML Component?
         FillInDayLabels();
-
-        RefreshActivityGridAsync();
+        await RefreshActivityGrid();
     }
 
     private async Task SetIndicatorStatusAsync(ActivityState state)
     {
         await DateIndicatorService.UpdateDate(DateTime.Today, state);
-        // TODO refresh
-
-        RefreshActivityGridAsync();
+        await RefreshActivityGrid();
     }
 
-    private async Task RefreshActivityGridAsync()
+    private async Task RefreshActivityGrid()
     {
-
         flexLayout.Clear();
-        var dates = await GetActivityDates();
-        List<Activity> activityDates = dates.ToList();
+        List<Activity> activityDates = new List<Activity>();
+
+        var previousActivity = await getPreviousMonth() as List<Activity>;
+        var monthActivity = await GetMonthActivityDates() as List<Activity>;
+
+        activityDates.AddRange(previousActivity);
+        activityDates.AddRange(monthActivity);
+
         foreach (Activity activityDate in activityDates)
         {
             ActivityIndicator dateIndicatorBox = new ActivityIndicator(activityDate);
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
             flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
+    }
+
+    private async Task<IEnumerable<Activity>> getPreviousMonth()
+    {
+        //TODO Jan Proof?
+        var endDatePreviousMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month - 1));
+        var firstDayOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).DayOfWeek;
+        var offsetDays = (int) firstDayOfMonth - 2;
+        DateTime offsetDate = new DateTime(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
+
+        return await GetIntervalDates(offsetDate.ToShortDateString(), endDatePreviousMonth.ToShortDateString());
     }
 
     private async void Present_Clicked(object sender, EventArgs e)

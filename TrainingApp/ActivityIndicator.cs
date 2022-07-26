@@ -28,23 +28,6 @@ public class ActivityIndicator
 
     }
 
-
-    //TODO make in xaml only
-    //private void InitActivityBox()
-    //{
-    //    this._boxIndicator = new BoxView();
-    //    SetIndicatorBoxColor(this._model.ActivityState);
-    //    _boxIndicator.Opacity = 1;
-    //    _boxIndicator.CornerRadius = 2;
-    //    _boxIndicator.WidthRequest = 20;
-    //    _boxIndicator.HeightRequest = 20;
-    //    _boxIndicator.Margin = 1;
-    //    _boxIndicator.VerticalOptions = LayoutOptions.Center;
-    //    _boxIndicator.HorizontalOptions = LayoutOptions.Center;
-    //}
-
-
-    //TODO choose color palette
     private Color SetIndicatorBoxColor(ActivityState state) => state switch
     {
         ActivityState.PRESENT => new Color(116, 255, 112),
