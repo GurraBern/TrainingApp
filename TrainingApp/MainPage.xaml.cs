@@ -4,10 +4,6 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    private List<ActivityIndicator> activityIndicators;
-    private Activity activityIndicatorModel;
-
-    private int _daysOffset = 0;
     private DateIndicatorService db;
 
 
@@ -24,11 +20,17 @@ public partial class MainPage : ContentPage
         FillActivityGridAsync();
     }
 
+    //OLD
+    //private async Task FillMonthAsync()
+    //{
+    //    await DateIndicatorService.AddDatesMonth(DateTime.Today);
+    //}
+
     private async Task FillMonthAsync()
     {
-        await DateIndicatorService.AddDatesMonth(DateTime.Today);
+        await DateIndicatorService.AddDatesToMonth(DateTime.Today);
     }
-
+    
     private async Task<IEnumerable<Activity>> GetMonthActivityDates()
     {
         var daysInMonth = DateTime.DaysInMonth(DateTime.Today.Year,DateTime.Today.Month);

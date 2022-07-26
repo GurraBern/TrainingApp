@@ -20,20 +20,8 @@ public class DateIndicatorService
 
         if (!GetActivityDates().Result.Any())
         {
-            await AddDatesMonth(DateTime.Today);
-        }
-    }
-
-    public static async Task AddDatesMonth(DateTime dateTime)
-    {
-        await Init();
-        int daysCount = DateTime.DaysInMonth(dateTime.Year, dateTime.Month);
-
-        //TODO better to have one call to database
-        for(int i = 1; i < daysCount+1; i++)
-        {
-            var date = new DateTime(dateTime.Year, dateTime.Month, i);
-            await AddDate(date, ActivityState.ABSENT);
+            await AddDatesToMonth(new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.Today.Day));
+            await AddDatesToMonth(DateTime.Today);
         }
     }
 
@@ -42,7 +30,6 @@ public class DateIndicatorService
         await Init();
 
         var dateString = date.ToShortDateString();
-
         var activityIndicator = new Activity()
         {
             Date = dateString,
@@ -52,10 +39,31 @@ public class DateIndicatorService
         var id = await db.InsertAsync(activityIndicator);
     }
 
+    public static async Task AddDatesToMonth(DateTime date)
+    {
+        await Init();
+
+        int daysCount = DateTime.DaysInMonth(date.Year, date.Month);
+        List<Activity> activityDates = new List<Activity>();
+
+        for (int i = 1; i < daysCount + 1; i++)
+        {
+            var incDay = new DateTime(date.Year, date.Month, i);
+            var activityIndicator = new Activity()
+            {
+                Date = incDay.ToShortDateString(),
+                ActivityState = ActivityState.ABSENT
+            };
+
+            activityDates.Add(activityIndicator);
+        }
+
+        var id = await db.InsertAllAsync(activityDates);
+    }
+
     public static async Task UpdateDate(DateTime date, ActivityState activityState)
     {
         var dateShort = date.ToShortDateString();
-
 
         //TODO if null throw exeption
         var activityIndicatorObj = await db.Table<Activity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
