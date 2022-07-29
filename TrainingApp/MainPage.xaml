@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:TrainingApp.Model"
              x:Class="TrainingApp.MainPage"
              BackgroundColor="Grey">
 
@@ -14,7 +15,16 @@
         <Label>🔥</Label>
 
 
-
+        <CollectionView>
+            <CollectionView.ItemsSource>
+                <x:Array Type="{x:Type model:Activity}">
+                    <model:Activity
+                        ActivityState="PRESENT"
+                        Date="2022-05-13">
+                    </model:Activity>
+                </x:Array>
+            </CollectionView.ItemsSource>
+        </CollectionView>
 
         <!--<FlexLayout x:Name="flexLayout" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,0,0,0"  Wrap="Wrap"></FlexLayout>-->
 

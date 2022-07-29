@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using TrainingApp.Model;
 
 namespace TrainingApp.Services;
 
@@ -23,6 +24,7 @@ public class DateIndicatorService
             await AddDatesToMonth(new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.Today.Day));
             await AddDatesToMonth(DateTime.Today);
         }
+
     }
 
     public static async Task AddDate(DateTime date, ActivityState activityState)
@@ -65,10 +67,17 @@ public class DateIndicatorService
     {
         var dateShort = date.ToShortDateString();
 
-        //TODO if null throw exeption
+
         var activityIndicatorObj = await db.Table<Activity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
-        activityIndicatorObj.ActivityState = activityState;
-        await db.UpdateAsync(activityIndicatorObj);
+
+        if(activityIndicatorObj != null)
+        {
+            activityIndicatorObj.ActivityState = activityState;
+            await db.UpdateAsync(activityIndicatorObj);
+        } else
+        {
+            //TODO throw exeption, cant update unless date exist in db
+        }
     }
 
     public static async Task RemoveDate(int id)
@@ -85,7 +94,7 @@ public class DateIndicatorService
         return dates;
     }
 
-    public static async Task<IEnumerable<Activity>> GetActivityDatesBetween(string startDate, string endDate)
+    public static async Task<IEnumerable<Activity>> GetActivityBetween(string startDate, string endDate)
     {
         await Init();
         var dbConnection = db.GetConnection();

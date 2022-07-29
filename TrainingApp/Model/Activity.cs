@@ -1,4 +1,6 @@
-﻿using System;
+﻿namespace TrainingApp.Model;
+
+using System;
 using SQLite;
 
 public class Activity
