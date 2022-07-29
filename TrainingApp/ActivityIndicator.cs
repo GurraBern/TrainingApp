@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Graphics.Text;
+using TrainingApp.Model;
 using static System.Net.Mime.MediaTypeNames;
 
 public class ActivityIndicator
@@ -12,6 +13,8 @@ public class ActivityIndicator
         InitActivityBoxNew();
     }
 
+
+    //TODO Change to xaml
     private void InitActivityBoxNew()
     {
         this._boxIndicator = new Button();

@@ -1,4 +1,5 @@
-﻿using TrainingApp.Services;
+﻿using TrainingApp.Model;
+using TrainingApp.Services;
 
 namespace TrainingApp;
 
@@ -18,17 +19,6 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         db = new DateIndicatorService();
         FillActivityGridAsync();
-    }
-
-    //OLD
-    //private async Task FillMonthAsync()
-    //{
-    //    await DateIndicatorService.AddDatesMonth(DateTime.Today);
-    //}
-
-    private async Task FillMonthAsync()
-    {
-        await DateIndicatorService.AddDatesToMonth(DateTime.Today);
     }
     
     private async Task<IEnumerable<Activity>> GetMonthActivityDates()
@@ -50,11 +40,13 @@ public partial class MainPage : ContentPage
 
     private async Task<IEnumerable<Activity>> GetIntervalDates(string startDate, string endDate)
     {
-        var dates = await Task.Run(() => DateIndicatorService.GetActivityDatesBetween(startDate, endDate));
+        var dates = await Task.Run(() => DateIndicatorService.GetActivityBetween(startDate, endDate));
 
         return dates;
     }
 
+
+    //TODO Change to xaml
     private void FillInDayLabels()
     {
         foreach (DaysOfWeek day in Enum.GetValues(typeof(DaysOfWeek)))
@@ -104,9 +96,15 @@ public partial class MainPage : ContentPage
 
     private async Task<IEnumerable<Activity>> getPreviousMonth()
     {
-        //TODO Jan Proof?
-        var endDatePreviousMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month - 1));
-        var firstDayOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).DayOfWeek;
+        var date = DateTime.Now;
+        if(date.Month == 1)
+        {
+            date = new DateTime(date.Year - 1, 12, 1);
+        }
+
+        //TODO Jan Proof?  double test
+        var endDatePreviousMonth = new DateTime(date.Year, date.Month - 1, DateTime.DaysInMonth(date.Year, date.Month - 1));
+        var firstDayOfMonth = new DateTime(date.Year, date.Month, 1).DayOfWeek;
         var offsetDays = (int) firstDayOfMonth - 2;
         DateTime offsetDate = new DateTime(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
 
