@@ -5,7 +5,7 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    private DateIndicatorService db;
+    //private DateIndicatorService db;
 
 
 
@@ -14,10 +14,11 @@ public partial class MainPage : ContentPage
         StartUpAsync();
     }
 
-    private async Task StartUpAsync()
+    private void StartUpAsync()
     {
         InitializeComponent();
-        db = new DateIndicatorService();
+        //db = new DateIndicatorService();
+
         FillActivityGridAsync();
     }
     
@@ -76,14 +77,15 @@ public partial class MainPage : ContentPage
     }
 
     private async Task RefreshActivityGrid()
-    {
+      {
         flexLayout.Clear();
         List<Activity> activityDates = new List<Activity>();
 
         var previousActivity = await getPreviousMonth() as List<Activity>;
-        var monthActivity = await GetMonthActivityDates() as List<Activity>;
+        if(previousActivity != null)
+            activityDates.AddRange(previousActivity);
 
-        activityDates.AddRange(previousActivity);
+        var monthActivity = await GetMonthActivityDates() as List<Activity>;
         activityDates.AddRange(monthActivity);
 
         foreach (Activity activityDate in activityDates)
@@ -105,10 +107,21 @@ public partial class MainPage : ContentPage
         //TODO Jan Proof?  double test
         var endDatePreviousMonth = new DateTime(date.Year, date.Month - 1, DateTime.DaysInMonth(date.Year, date.Month - 1));
         var firstDayOfMonth = new DateTime(date.Year, date.Month, 1).DayOfWeek;
-        var offsetDays = (int) firstDayOfMonth - 2;
-        DateTime offsetDate = new DateTime(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
 
-        return await GetIntervalDates(offsetDate.ToShortDateString(), endDatePreviousMonth.ToShortDateString());
+
+        //var offsetDays = (int) firstDayOfMonth - 2;
+        var offsetDays = (int) firstDayOfMonth-2;
+        if(offsetDays <= 0)
+        {
+            //isMonday
+            return Enumerable.Empty<Activity>();
+        }
+
+        DateTime offsetDate = new DateTime(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
+        var date1 = offsetDate.ToShortDateString();
+        var date2 = endDatePreviousMonth.ToShortDateString();
+
+        return await GetIntervalDates(date1,date2);
     }
 
     private async void Present_Clicked(object sender, EventArgs e)

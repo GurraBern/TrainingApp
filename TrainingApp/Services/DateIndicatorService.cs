@@ -19,12 +19,14 @@ public class DateIndicatorService
         db = new SQLiteAsyncConnection(databasePath);
         await db.CreateTableAsync<Activity>();
 
-        if (!GetActivityDates().Result.Any())
+        var today = DateTime.Today;
+        var endOfMonth = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
+        var dates = await GetActivityBetween(today.ToShortDateString(), endOfMonth.ToShortDateString());
+
+        if(dates.Count() <= 0)
         {
-            await AddDatesToMonth(new DateTime(DateTime.Today.Year, DateTime.Today.Month - 1, DateTime.Today.Day));
             await AddDatesToMonth(DateTime.Today);
         }
-
     }
 
     public static async Task AddDate(DateTime date, ActivityState activityState)
