@@ -72,7 +72,8 @@ public partial class MainPage : ContentPage
 
     private async Task SetIndicatorStatusAsync(ActivityState state)
     {
-        await DateIndicatorService.UpdateDate(DateTime.Today, state);
+        await DateIndicatorService.UpdateDate(DateTime.Now, state);
+        await ProfileService.UpdateLatestActivity(DateTime.Now, state);
         await RefreshActivityGrid();
     }
 
