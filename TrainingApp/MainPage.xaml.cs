@@ -5,10 +5,6 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    public BindableProperty streakDays;
-
-
-
     public MainPage()
 	{
         StartUpAsync();
@@ -16,15 +12,16 @@ public partial class MainPage : ContentPage
 
 
 
-    private async void StartUpAsync()
+    private void StartUpAsync()
     {
         InitializeComponent();
-        FillActivityGridAsync();
+        SetupStart();
+    }
 
-        var streakDays2 = await ProfileService.GetCurrentActivityStreakAsync();
-
-
-
+    private async Task RefreshStreakLabelAsync()
+    {
+        var streakDays = await ProfileService.GetCurrentActivityStreakAsync();
+        StreakLabel.Text = streakDays.ToString() + " 🔥 Day Streak";
     }
     
     private async Task<IEnumerable<Activity>> GetMonthActivityDates()
@@ -69,9 +66,10 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private async void FillActivityGridAsync()
+    private async void SetupStart()
 	{
         FillInDayLabels();
+        await RefreshStreakLabelAsync();
         await RefreshActivityGrid();
     }
 
@@ -79,6 +77,7 @@ public partial class MainPage : ContentPage
     {
         await DateIndicatorService.UpdateDate(DateTime.Now, state);
         await ProfileService.UpdateLatestActivity(DateTime.Now, state);
+        await RefreshStreakLabelAsync();
         await RefreshActivityGrid();
     }
 
@@ -100,7 +99,6 @@ public partial class MainPage : ContentPage
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
             flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
-        
     }
 
     private async Task<IEnumerable<Activity>> getPreviousMonth()

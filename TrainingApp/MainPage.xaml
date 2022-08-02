@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:TrainingApp.Model"
              x:Class="TrainingApp.MainPage"
+             x:DataType="model:Profile"
              BackgroundColor="Grey">
 
 
@@ -14,8 +15,8 @@
         <FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>
 
 
-        <Label FontSize="50" TextColor="Blue" Text="{Binding streakDays}"></Label>
-        <!--🔥-->
+        <Label x:Name="StreakLabel" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
+        <!--<Label HorizontalOptions="Center" FontSize="50" TextColor="Blue" Text="5 Day Streak🔥"></Label>-->
 
 
         <!--TODO KEEP-->

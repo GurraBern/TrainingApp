@@ -32,8 +32,8 @@ public class ProfileService
             {
                 Name = "Gustav",
                 LastName = "Berndtzen",
-                LastDate = DateTime.Now.ToShortDateString(),
-                LastTime = DateTime.Now.ToShortTimeString(),
+                LastDate = DateTime.MinValue.ToShortDateString(),
+                LastTime = DateTime.MinValue.ToShortTimeString(),
                 ActivityState = ActivityState.ABSENT,
                 StreakDays = 0,
             };
@@ -46,12 +46,15 @@ public class ProfileService
         await Init();                                                                                                     
         var profile = await db.Table<Profile>().FirstOrDefaultAsync();
 
-        if(profile.ActivityState == ActivityState.PRESENT || profile.ActivityState == ActivityState.RESTDAY)
+        if(activityState == ActivityState.PRESENT || activityState == ActivityState.RESTDAY)
         {
-            if (!profile.LastDate.Equals(DateTime.Now.ToShortDateString()))
-            {
-                profile.StreakDays++;
-            }
+            profile.StreakDays++;
+
+            //TODO Uncomment
+            //if (!profile.LastDate.Equals(DateTime.Now.ToShortDateString()))
+            //{
+            //    profile.StreakDays++;
+            //}
         }
         else
         {
