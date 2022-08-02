@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Microsoft.Maui.ApplicationModel;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,43 +25,49 @@ public class ProfileService
         db = new SQLiteAsyncConnection(databasePath);
         await db.CreateTableAsync<Profile>();
 
-        //await UpdateLatestActivity(DateTime.Now, ActivityState.RESTDAY);
-    }
 
-
-    //TODO add logic for streak
-    public static async Task UpdateLatestActivity(DateTime date, ActivityState activityState)
-{
-        await Init();                                                                                                     
-        var dateShort = date.ToShortDateString();
         var profile = await db.Table<Profile>().FirstOrDefaultAsync();
-
-        if (profile != null)
+        if (profile == null)
         {
-            //if green or orange keep streak update db
 
-
-
-
-            profile.ActivityState = activityState;
-            profile.LastDate = date.ToShortDateString();
-            profile.LastTime = date.ToShortTimeString();
-            await db.UpdateAsync(profile);
-        }
-        else
-        {
             Profile newProfile = new Profile
             {
                 Name = "Gustav",
                 LastName = "Berndtzen",
-                LastDate = date.ToShortDateString(),
-                LastTime = date.ToShortTimeString(),
-                ActivityState = activityState,
+                LastDate = DateTime.Now.ToShortDateString(),
+                LastTime = DateTime.Now.ToShortTimeString(),
+                ActivityState = ActivityState.ABSENT,
+                StreakDays = 0,
             };
-
             await db.InsertAsync(newProfile);
-                //TODO throw exeption, cant update unless date exist in db
         }
+    }
+
+
+
+    public static async Task UpdateLatestActivity(DateTime date, ActivityState activityState)
+{
+        await Init();                                                                                                     
+        var profile = await db.Table<Profile>().FirstOrDefaultAsync();
+
+        if(profile.ActivityState == ActivityState.PRESENT || profile.ActivityState == ActivityState.RESTDAY)
+        {
+            if (!profile.LastDate.Equals(DateTime.Now.ToShortDateString()))
+            {
+                profile.StreakDays++;
+            }
+        }
+        else
+        {
+            profile.StreakDays = 0;
+        }
+                
+
+
+        profile.ActivityState = activityState;
+        profile.LastDate = date.ToShortDateString();
+        profile.LastTime = date.ToShortTimeString();
+        await db.UpdateAsync(profile);
     }
 
     //public static async Task AddDate(DateTime date, ActivityState activityState)

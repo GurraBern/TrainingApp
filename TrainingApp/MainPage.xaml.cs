@@ -110,11 +110,10 @@ public partial class MainPage : ContentPage
         var firstDayOfMonth = new DateTime(date.Year, date.Month, 1).DayOfWeek;
 
 
-        //var offsetDays = (int) firstDayOfMonth - 2;
+
         var offsetDays = (int) firstDayOfMonth-2;
         if(offsetDays <= 0)
         {
-            //isMonday
             return Enumerable.Empty<Activity>();
         }
 

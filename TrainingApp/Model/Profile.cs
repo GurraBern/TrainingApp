@@ -11,5 +11,6 @@ public class Profile
     public string LastName { get; set; }
     public string LastDate { get; set; }
     public string LastTime { get; set; }
+    public int StreakDays { get; set; }
     public ActivityState ActivityState { get; set; }
 }
