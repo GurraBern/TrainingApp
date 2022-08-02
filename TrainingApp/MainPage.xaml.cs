@@ -1,14 +1,12 @@
-﻿using TrainingApp.Model;
+﻿using Microsoft.Maui.Platform;
+using System.Timers;
+using TrainingApp.Model;
 using TrainingApp.Services;
 
 namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    //private DateIndicatorService db;
-
-
-
     public MainPage()
 	{
         StartUpAsync();
@@ -17,9 +15,13 @@ public partial class MainPage : ContentPage
     private void StartUpAsync()
     {
         InitializeComponent();
-        //db = new DateIndicatorService();
+        SetupStart();
+    }
 
-        FillActivityGridAsync();
+    private async Task RefreshStreakLabelAsync()
+    {
+        var streakDays = await ProfileService.GetCurrentActivityStreakAsync();
+        StreakLabel.Text = streakDays.ToString() + " 🔥 Day Streak";
     }
     
     private async Task<IEnumerable<Activity>> GetMonthActivityDates()
@@ -64,15 +66,18 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private async void FillActivityGridAsync()
+    private async void SetupStart()
 	{
         FillInDayLabels();
+        await RefreshStreakLabelAsync();
         await RefreshActivityGrid();
     }
 
     private async Task SetIndicatorStatusAsync(ActivityState state)
     {
-        await DateIndicatorService.UpdateDate(DateTime.Today, state);
+        await DateIndicatorService.UpdateDate(DateTime.Now, state);
+        await ProfileService.UpdateLatestActivity(DateTime.Now, state);
+        await RefreshStreakLabelAsync();
         await RefreshActivityGrid();
     }
 
@@ -108,12 +113,9 @@ public partial class MainPage : ContentPage
         var endDatePreviousMonth = new DateTime(date.Year, date.Month - 1, DateTime.DaysInMonth(date.Year, date.Month - 1));
         var firstDayOfMonth = new DateTime(date.Year, date.Month, 1).DayOfWeek;
 
-
-        //var offsetDays = (int) firstDayOfMonth - 2;
         var offsetDays = (int) firstDayOfMonth-2;
         if(offsetDays <= 0)
         {
-            //isMonday
             return Enumerable.Empty<Activity>();
         }
 
@@ -137,7 +139,16 @@ public partial class MainPage : ContentPage
     private async void Present_Absent(object sender, EventArgs e)
     {
         await SetIndicatorStatusAsync(ActivityState.ABSENT);
+    }    
+    
+    private async void ClockedIn(object sender, EventArgs e)
+    {
+        var profile = await ProfileService.GetProfile();
+        DateTime checkInTime = Convert.ToDateTime(profile.LastTime);
+        string duration = DateTime.Now.Subtract(checkInTime).ToString(@"hh\:mm\:ss");
+        LastWorkoutDuration.Text = "Last Workout Duration: " + duration;
     }
+
 
     public enum DaysOfWeek
     {

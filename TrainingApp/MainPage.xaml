@@ -3,19 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:TrainingApp.Model"
              x:Class="TrainingApp.MainPage"
+             x:DataType="model:Profile"
              BackgroundColor="Grey">
 
 
 
     <VerticalStackLayout>
-        <FlexLayout x:Name="daysLabels" MaximumWidthRequest="210" Margin="0,50,0,0" Wrap="Wrap">
-  
-        </FlexLayout>
+        <FlexLayout x:Name="daysLabels" MaximumWidthRequest="210" Margin="0,50,0,0" Wrap="Wrap"/>
         <FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>
-        <Label>🔥</Label>
+        
+        <Label x:Name="StreakLabel" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
+
+        <Label x:Name="LastWorkoutDuration" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
+
+        <Button Margin="500, 0" Clicked="ClockedIn"  Text="▶️"></Button>
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button Clicked="Present_Clicked"  Text="Went To Gym"></Button>
+            <Button Clicked="RestDay_Clicked" Text="Rest Day"></Button>
+            <Button Clicked="Present_Absent" Text="Didn't go"></Button>
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+
+    
+</ContentPage>
 
 
-        <CollectionView>
+<!--TODO KEEP-->
+<!--<CollectionView>
             <CollectionView.ItemsSource>
                 <x:Array Type="{x:Type model:Activity}">
                     <model:Activity
@@ -24,18 +40,4 @@
                     </model:Activity>
                 </x:Array>
             </CollectionView.ItemsSource>
-        </CollectionView>
-
-        <!--<FlexLayout x:Name="flexLayout" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,0,0,0"  Wrap="Wrap"></FlexLayout>-->
-
-        <HorizontalStackLayout>
-            <Button Clicked="Present_Clicked"  Text="Went To Gym"></Button>
-            <Button Clicked="RestDay_Clicked" Text="Rest Day"></Button>
-            <Button Clicked="Present_Absent" Text="Didnt go"></Button>
-        </HorizontalStackLayout>
-
-
-    </VerticalStackLayout>
-
-    
-</ContentPage>
+        </CollectionView>-->

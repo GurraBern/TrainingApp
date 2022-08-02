@@ -56,8 +56,9 @@ public class DateIndicatorService
             var activityIndicator = new Activity()
             {
                 Date = incDay.ToShortDateString(),
+                Time = incDay.ToShortTimeString(),
                 ActivityState = ActivityState.ABSENT
-            };
+            };           
 
             activityDates.Add(activityIndicator);
         }
@@ -68,13 +69,12 @@ public class DateIndicatorService
     public static async Task UpdateDate(DateTime date, ActivityState activityState)
     {
         var dateShort = date.ToShortDateString();
-
-
         var activityIndicatorObj = await db.Table<Activity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
 
         if(activityIndicatorObj != null)
         {
             activityIndicatorObj.ActivityState = activityState;
+            activityIndicatorObj.Time = date.ToShortTimeString();
             await db.UpdateAsync(activityIndicatorObj);
         } else
         {
