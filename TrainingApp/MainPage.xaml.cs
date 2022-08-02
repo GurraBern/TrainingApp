@@ -5,8 +5,8 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
-    //private DateIndicatorService db;
 
+    public BindableProperty settttt { get; set; }
 
 
     public MainPage()
@@ -17,9 +17,9 @@ public partial class MainPage : ContentPage
     private void StartUpAsync()
     {
         InitializeComponent();
-        //db = new DateIndicatorService();
-
         FillActivityGridAsync();
+
+        var streakDays = ProfileService.GetCurrentActivityStreak();
     }
     
     private async Task<IEnumerable<Activity>> GetMonthActivityDates()
@@ -95,6 +95,7 @@ public partial class MainPage : ContentPage
             dateIndicatorBox.SetActivityStatus(activityDate.ActivityState);
             flexLayout.Add(dateIndicatorBox.GetBoxIndicator());
         }
+        
     }
 
     private async Task<IEnumerable<Activity>> getPreviousMonth()

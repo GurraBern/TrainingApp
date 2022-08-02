@@ -25,11 +25,9 @@ public class ProfileService
         db = new SQLiteAsyncConnection(databasePath);
         await db.CreateTableAsync<Profile>();
 
-
         var profile = await db.Table<Profile>().FirstOrDefaultAsync();
         if (profile == null)
         {
-
             Profile newProfile = new Profile
             {
                 Name = "Gustav",
@@ -42,8 +40,6 @@ public class ProfileService
             await db.InsertAsync(newProfile);
         }
     }
-
-
 
     public static async Task UpdateLatestActivity(DateTime date, ActivityState activityState)
 {
@@ -61,8 +57,6 @@ public class ProfileService
         {
             profile.StreakDays = 0;
         }
-                
-
 
         profile.ActivityState = activityState;
         profile.LastDate = date.ToShortDateString();
@@ -70,17 +64,8 @@ public class ProfileService
         await db.UpdateAsync(profile);
     }
 
-    //public static async Task AddDate(DateTime date, ActivityState activityState)
-    //{
-    //    await Init();
-
-    //    var dateString = date.ToShortDateString();
-    //    var activityIndicator = new Activity()
-    //    {
-    //        Date = dateString,
-    //        ActivityState = activityState
-    //    };
-
-    //    var id = await db.InsertAsync(activityIndicator);
-    //}
+    public static int GetCurrentActivityStreak()
+    {
+        return db.Table<Profile>().FirstAsync().Result.StreakDays;
+    }
 }

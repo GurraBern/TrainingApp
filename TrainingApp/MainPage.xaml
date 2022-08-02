@@ -12,10 +12,12 @@
   
         </FlexLayout>
         <FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>
-        <Label>🔥</Label>
+        <Label Text="{Binding setttt}">🔥</Label>
 
 
-        <CollectionView>
+        
+        <!--TODO KEEP-->
+        <!--<CollectionView>
             <CollectionView.ItemsSource>
                 <x:Array Type="{x:Type model:Activity}">
                     <model:Activity
@@ -24,16 +26,13 @@
                     </model:Activity>
                 </x:Array>
             </CollectionView.ItemsSource>
-        </CollectionView>
+        </CollectionView>-->
 
-        <!--<FlexLayout x:Name="flexLayout" WidthRequest="180" HeightRequest="30" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,0,0,0"  Wrap="Wrap"></FlexLayout>-->
-
-        <HorizontalStackLayout>
+        <HorizontalStackLayout HorizontalOptions="Center">
             <Button Clicked="Present_Clicked"  Text="Went To Gym"></Button>
             <Button Clicked="RestDay_Clicked" Text="Rest Day"></Button>
             <Button Clicked="Present_Absent" Text="Didnt go"></Button>
         </HorizontalStackLayout>
-
 
     </VerticalStackLayout>
 
