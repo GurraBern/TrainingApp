@@ -64,8 +64,10 @@ public class ProfileService
         await db.UpdateAsync(profile);
     }
 
-    public static int GetCurrentActivityStreak()
+    public static async Task<int> GetCurrentActivityStreakAsync()
     {
+        await Init();
+
         return db.Table<Profile>().FirstAsync().Result.StreakDays;
     }
 }

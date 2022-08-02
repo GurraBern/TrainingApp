@@ -5,8 +5,8 @@ namespace TrainingApp;
 
 public partial class MainPage : ContentPage
 {
+    public BindableProperty streakDays;
 
-    public BindableProperty settttt { get; set; }
 
 
     public MainPage()
@@ -14,12 +14,17 @@ public partial class MainPage : ContentPage
         StartUpAsync();
     }
 
-    private void StartUpAsync()
+
+
+    private async void StartUpAsync()
     {
         InitializeComponent();
         FillActivityGridAsync();
 
-        var streakDays = ProfileService.GetCurrentActivityStreak();
+        var streakDays2 = await ProfileService.GetCurrentActivityStreakAsync();
+
+
+
     }
     
     private async Task<IEnumerable<Activity>> GetMonthActivityDates()

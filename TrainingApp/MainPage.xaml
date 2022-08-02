@@ -12,10 +12,12 @@
   
         </FlexLayout>
         <FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>
-        <Label Text="{Binding setttt}">🔥</Label>
 
 
-        
+        <Label FontSize="50" TextColor="Blue" Text="{Binding streakDays}"></Label>
+        <!--🔥-->
+
+
         <!--TODO KEEP-->
         <!--<CollectionView>
             <CollectionView.ItemsSource>
