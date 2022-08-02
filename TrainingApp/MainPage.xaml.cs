@@ -1,4 +1,6 @@
-﻿using TrainingApp.Model;
+﻿using Microsoft.Maui.Platform;
+using System.Timers;
+using TrainingApp.Model;
 using TrainingApp.Services;
 
 namespace TrainingApp;
@@ -9,8 +11,6 @@ public partial class MainPage : ContentPage
 	{
         StartUpAsync();
     }
-
-
 
     private void StartUpAsync()
     {
@@ -113,8 +113,6 @@ public partial class MainPage : ContentPage
         var endDatePreviousMonth = new DateTime(date.Year, date.Month - 1, DateTime.DaysInMonth(date.Year, date.Month - 1));
         var firstDayOfMonth = new DateTime(date.Year, date.Month, 1).DayOfWeek;
 
-
-
         var offsetDays = (int) firstDayOfMonth-2;
         if(offsetDays <= 0)
         {
@@ -141,7 +139,16 @@ public partial class MainPage : ContentPage
     private async void Present_Absent(object sender, EventArgs e)
     {
         await SetIndicatorStatusAsync(ActivityState.ABSENT);
+    }    
+    
+    private async void ClockedIn(object sender, EventArgs e)
+    {
+        var profile = await ProfileService.GetProfile();
+        DateTime checkInTime = Convert.ToDateTime(profile.LastTime);
+        string duration = DateTime.Now.Subtract(checkInTime).ToString(@"hh\:mm\:ss");
+        LastWorkoutDuration.Text = "Last Workout Duration: " + duration;
     }
+
 
     public enum DaysOfWeek
     {

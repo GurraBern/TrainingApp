@@ -1,10 +1,4 @@
-﻿using Microsoft.Maui.ApplicationModel;
-using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 using TrainingApp.Model;
 
 namespace TrainingApp.Services;
@@ -48,6 +42,7 @@ public class ProfileService
 
         if(activityState == ActivityState.PRESENT || activityState == ActivityState.RESTDAY)
         {
+            //TODO remove later
             profile.StreakDays++;
 
             //TODO Uncomment
@@ -65,6 +60,13 @@ public class ProfileService
         profile.LastDate = date.ToShortDateString();
         profile.LastTime = date.ToShortTimeString();
         await db.UpdateAsync(profile);
+    }
+
+    public static async Task<Profile> GetProfile()
+    {
+        await Init();
+
+        return db.Table<Profile>().FirstAsync().Result;
     }
 
     public static async Task<int> GetCurrentActivityStreakAsync()
