@@ -42,14 +42,10 @@ public class ProfileService
 
         if(activityState == ActivityState.PRESENT || activityState == ActivityState.RESTDAY)
         {
-            //TODO remove later
-            profile.StreakDays++;
-
-            //TODO Uncomment
-            //if (!profile.LastDate.Equals(DateTime.Now.ToShortDateString()))
-            //{
-            //    profile.StreakDays++;
-            //}
+            if (!profile.LastDate.Equals(DateTime.Now.ToShortDateString()))
+            {
+                profile.StreakDays++;
+            }
         }
         else
         {
@@ -65,14 +61,12 @@ public class ProfileService
     public static async Task<Profile> GetProfile()
     {
         await Init();
-
         return db.Table<Profile>().FirstAsync().Result;
     }
 
     public static async Task<int> GetCurrentActivityStreakAsync()
     {
         await Init();
-
         return db.Table<Profile>().FirstAsync().Result.StreakDays;
     }
 }

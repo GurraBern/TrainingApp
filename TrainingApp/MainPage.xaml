@@ -9,13 +9,20 @@
 
 
     <VerticalStackLayout>
-        <FlexLayout x:Name="daysLabels" MaximumWidthRequest="210" Margin="0,50,0,0" Wrap="Wrap"/>
+        <Label>End it all</Label>
+        <HorizontalStackLayout WidthRequest="210" MaximumWidthRequest="210" Margin="0,0,0,0">
+            <Button Text="Mon" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+            <Button Text="Tue" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+            <Button Text="Wed" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+            <Button Text="Thu" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+            <Button Text="Fri" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+            <Button Text="Sat" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+            <Button Text="Sun" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
+        </HorizontalStackLayout>
+
         <FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>
-        
         <Label x:Name="StreakLabel" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
-
         <Label x:Name="LastWorkoutDuration" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
-
         <Button Margin="500, 0" Clicked="ClockedIn"  Text="▶️"></Button>
 
         <HorizontalStackLayout HorizontalOptions="Center">

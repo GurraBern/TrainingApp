@@ -29,46 +29,22 @@ public partial class MainPage : ContentPage
         var daysInMonth = DateTime.DaysInMonth(DateTime.Today.Year,DateTime.Today.Month);
         var lastDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, daysInMonth);
         var firstDay = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-        var activityDatesEnum = await GetIntervalDates(firstDay.ToShortDateString(), lastDay.ToShortDateString());
 
-        return activityDatesEnum;
+        return await GetIntervalDates(firstDay.ToShortDateString(), lastDay.ToShortDateString()); ;
     }
 
     private async Task<IEnumerable<Activity>> GetActivityDates()
     {
-        var activityDatesEnum = await Task.Run(() => DateIndicatorService.GetActivityDates());
-
-        return activityDatesEnum;
+        return await Task.Run(() => DateIndicatorService.GetActivityDates()); ;
     }
 
     private async Task<IEnumerable<Activity>> GetIntervalDates(string startDate, string endDate)
     {
-        var dates = await Task.Run(() => DateIndicatorService.GetActivityBetween(startDate, endDate));
-
-        return dates;
-    }
-
-
-    //TODO Change to xaml
-    private void FillInDayLabels()
-    {
-        foreach (DaysOfWeek day in Enum.GetValues(typeof(DaysOfWeek)))
-        {
-            Button dayLabel = new Button();
-            dayLabel.Text = day.ToString();
-            dayLabel.FontAttributes = FontAttributes.Bold;
-            dayLabel.FontSize = 12;
-            dayLabel.Padding = 0;
-            dayLabel.WidthRequest = 30;
-            dayLabel.CornerRadius = 5;
-            dayLabel.TextColor = Color.FromRgb(0, 0, 0);
-            daysLabels.Add(dayLabel);
-        }
+        return await Task.Run(() => DateIndicatorService.GetActivityBetween(startDate, endDate)); ;
     }
 
     private async void SetupStart()
 	{
-        FillInDayLabels();
         await RefreshStreakLabelAsync();
         await RefreshActivityGrid();
     }
@@ -148,7 +124,6 @@ public partial class MainPage : ContentPage
         string duration = DateTime.Now.Subtract(checkInTime).ToString(@"hh\:mm\:ss");
         LastWorkoutDuration.Text = "Last Workout Duration: " + duration;
     }
-
 
     public enum DaysOfWeek
     {
