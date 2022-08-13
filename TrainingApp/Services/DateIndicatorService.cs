@@ -32,7 +32,7 @@ public class DateIndicatorService
     public static async Task AddDate(DateTime date, ActivityState activityState)
     {
         await Init();
-
+        
         var dateString = date.ToShortDateString();
         var activityIndicator = new Activity()
         {
@@ -85,6 +85,7 @@ public class DateIndicatorService
     public static async Task RemoveDate(int id)
     {
         await Init();
+
         await db.DeleteAsync<Activity>(id);
     }
 

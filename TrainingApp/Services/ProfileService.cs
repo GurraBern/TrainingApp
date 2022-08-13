@@ -15,6 +15,8 @@ public class ProfileService
             return;
         }
 
+
+
         var databasePath = Path.Combine(FileSystem.AppDataDirectory, "Profile.db");
         db = new SQLiteAsyncConnection(databasePath);
         await db.CreateTableAsync<Profile>();
