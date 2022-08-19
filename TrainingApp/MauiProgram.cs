@@ -1,4 +1,6 @@
-﻿namespace TrainingApp;
+﻿using TrainingApp.Services;
+
+namespace TrainingApp;
 
 public static class MauiProgram
 {
@@ -12,6 +14,12 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+
+		builder.Services.AddSingleton<DateIndicatorService>();
+		builder.Services.AddSingleton<ExerciseService>();
+		builder.Services.AddSingleton<ProfileService>();
+
+		builder.Services.AddSingleton<MainPage>();
 
 		return builder.Build();
 	}

@@ -7,7 +7,7 @@ public class ExerciseService
 {
     static SQLiteAsyncConnection db;
 
-    static async Task Init()
+    public static async Task Init()
     {
         if (db != null)
         {
@@ -22,7 +22,7 @@ public class ExerciseService
 
     }
 
-    static async Task CreateExercise()
+    public static async Task CreateExercise()
     {
         var exercise = new Exercise();
         exercise.Name = "Dumbell Curls";
@@ -33,5 +33,13 @@ public class ExerciseService
 
 
         await db.InsertAsync(exercise);
+    }
+
+    public static async Task<List<Exercise>> GetExercises()
+    {
+        await Init();
+        var exercises = await db.Table<Exercise>().ToListAsync();
+
+        return exercises;
     }
 }

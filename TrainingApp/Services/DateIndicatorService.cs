@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Linq;
 using TrainingApp.Model;
 
 namespace TrainingApp.Services;
@@ -89,7 +90,7 @@ public class DateIndicatorService
         await db.DeleteAsync<Activity>(id);
     }
 
-    public static async Task<IEnumerable<Activity>> GetActivityDates()
+    public static async Task<List<Activity>> GetActivityDates()
     {
         await Init();
         var dates = await db.Table<Activity>().ToListAsync();
@@ -97,7 +98,7 @@ public class DateIndicatorService
         return dates;
     }
 
-    public static async Task<IEnumerable<Activity>> GetActivityBetween(string startDate, string endDate)
+    public static async Task<List<Activity>> GetActivityBetween(string startDate, string endDate)
     {
         await Init();
         var dbConnection = db.GetConnection();

@@ -62,7 +62,7 @@ public partial class MainPage : ContentPage
         flexLayout.Clear();
         List<Activity> activityDates = new List<Activity>();
 
-        var previousActivity = await getPreviousMonth() as List<Activity>;
+        var previousActivity = await GetPreviousMonth() as List<Activity>;
         if(previousActivity != null)
             activityDates.AddRange(previousActivity);
 
@@ -77,7 +77,7 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private async Task<IEnumerable<Activity>> getPreviousMonth()
+    private async Task<IEnumerable<Activity>> GetPreviousMonth()
     {
         var date = DateTime.Now;
         if(date.Month == 1)
@@ -85,7 +85,6 @@ public partial class MainPage : ContentPage
             date = new DateTime(date.Year - 1, 12, 1);
         }
 
-        //TODO Jan Proof?  double test
         var endDatePreviousMonth = new DateTime(date.Year, date.Month - 1, DateTime.DaysInMonth(date.Year, date.Month - 1));
         var firstDayOfMonth = new DateTime(date.Year, date.Month, 1).DayOfWeek;
 

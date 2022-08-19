@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace TrainingApp.ViewModel
+namespace TrainingApp.ViewModel;
+
+public partial class BaseViewModel: ObservableObject
 {
-    internal class BaseViewModel
-    {
+
+    public BaseViewModel(){
+
     }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsNotBusy))]
+    bool isBusy;
+
+    [ObservableProperty]
+    string title;
+
+    public bool IsNotBusy => !isBusy;
 }
