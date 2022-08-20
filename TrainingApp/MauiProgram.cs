@@ -1,4 +1,6 @@
 ﻿using TrainingApp.Services;
+using TrainingApp.View;
+using TrainingApp.ViewModel;
 
 namespace TrainingApp;
 
@@ -19,7 +21,11 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ExerciseService>();
 		builder.Services.AddSingleton<ProfileService>();
 
-		builder.Services.AddSingleton<MainPage>();
+		builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<MainPage>();
+
+        builder.Services.AddSingleton<ExercisesViewModel>();
+		builder.Services.AddSingleton<ExercisesView>();
 
 		return builder.Build();
 	}

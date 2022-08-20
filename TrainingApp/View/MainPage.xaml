@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:model="clr-namespace:TrainingApp.Model"
-             x:Class="TrainingApp.MainPage"
-             x:DataType="model:Profile"
-             BackgroundColor="Grey">
+<ContentPage 
+    x:Class="TrainingApp.View.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:TrainingApp.Model"
+    xmlns:viewmodel="clr-namespace:TrainingApp.ViewModel"
+    Title="Test App"
+    x:DataType="viewmodel:MainPageViewModel"
+    BackgroundColor="Grey">
 
 
 
@@ -19,15 +22,35 @@
             <Button Text="Sun" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
         </HorizontalStackLayout>
 
-        <FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>
+        <!--UnComment-->
+        <!--<FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>-->
+
+        <CollectionView
+                ItemsSource="{Binding ActivityIndicators}"
+                BackgroundColor="Transparent"
+                SelectionMode="None">
+
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:ExerciseActivity">
+                    <Label BackgroundColor="Green" FontSize="16" TextColor="Red" Text="{Binding ActivityState}"></Label>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
+
         <Label x:Name="StreakLabel" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
         <Label x:Name="LastWorkoutDuration" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
-        <Button Margin="500, 0" Clicked="ClockedIn" Text="▶️"></Button>
+        <!--<Button Margin="500, 0" Clicked="ClockedIn" Text="▶️"></Button>-->
 
+        <!--<Button Command="{Binding RefreshActivityGridCommand}" Text="Test"></Button>-->
+        
         <HorizontalStackLayout HorizontalOptions="Center">
-            <Button Clicked="Present_Clicked" Text="Went To Gym"></Button>
-            <Button Clicked="RestDay_Clicked" Text="Rest Day"></Button>
-            <Button Clicked="Present_Absent" Text="Didn't go"></Button>
+            <Button Command="{Binding PresentCommand}" Text="Went To Gym"></Button>
+            <Button Command="{Binding RestDayCommand}" Text="Rest Day"></Button>
+            <Button Command="{Binding AbsentCommand}" Text="Didn't go"></Button>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

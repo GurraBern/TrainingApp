@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using TrainingApp.Model;
 
 namespace TrainingApp.Services;
 

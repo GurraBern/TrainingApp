@@ -4,10 +4,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 public class ActivityIndicator
 {
-    private Activity _model;
+    private ExerciseActivity _model;
     private Button _boxIndicator;
 
-    public ActivityIndicator(Activity model)
+    public ActivityIndicator(ExerciseActivity model)
     {
         this._model = model;
         InitActivityBoxNew();

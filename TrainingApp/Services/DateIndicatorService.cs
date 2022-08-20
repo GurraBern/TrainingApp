@@ -1,6 +1,5 @@
 ﻿using SQLite;
 using System.Linq;
-using TrainingApp.Model;
 
 namespace TrainingApp.Services;
 
@@ -8,7 +7,7 @@ public class DateIndicatorService
 {
     static SQLiteAsyncConnection db;
 
-    static async Task Init()
+    async Task Init()
     {
 
         if (db != null)
@@ -18,7 +17,7 @@ public class DateIndicatorService
 
         var databasePath = Path.Combine(FileSystem.AppDataDirectory, "ActivityDates.db");
         db = new SQLiteAsyncConnection(databasePath);
-        await db.CreateTableAsync<Activity>();
+        await db.CreateTableAsync<ExerciseActivity>();
 
         var today = DateTime.Today;
         var endOfMonth = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
@@ -30,12 +29,12 @@ public class DateIndicatorService
         }
     }
 
-    public static async Task AddDate(DateTime date, ActivityState activityState)
+    public async Task AddDate(DateTime date, ActivityState activityState)
     {
         await Init();
         
         var dateString = date.ToShortDateString();
-        var activityIndicator = new Activity()
+        var activityIndicator = new ExerciseActivity()
         {
             Date = dateString,
             ActivityState = activityState
@@ -44,17 +43,17 @@ public class DateIndicatorService
         var id = await db.InsertAsync(activityIndicator);
     }
 
-    public static async Task AddDatesToMonth(DateTime date)
+    public async Task AddDatesToMonth(DateTime date)
     {
         await Init();
 
         int daysCount = DateTime.DaysInMonth(date.Year, date.Month);
-        List<Activity> activityDates = new List<Activity>();
+        List<ExerciseActivity> activityDates = new List<ExerciseActivity>();
 
         for (int i = 1; i < daysCount + 1; i++)
         {
             var incDay = new DateTime(date.Year, date.Month, i);
-            var activityIndicator = new Activity()
+            var activityIndicator = new ExerciseActivity()
             {
                 Date = incDay.ToShortDateString(),
                 Time = incDay.ToShortTimeString(),
@@ -67,10 +66,10 @@ public class DateIndicatorService
         var id = await db.InsertAllAsync(activityDates);
     }
 
-    public static async Task UpdateDate(DateTime date, ActivityState activityState)
+    public async Task UpdateDate(DateTime date, ActivityState activityState)
     {
         var dateShort = date.ToShortDateString();
-        var activityIndicatorObj = await db.Table<Activity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
+        var activityIndicatorObj = await db.Table<ExerciseActivity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();
 
         if(activityIndicatorObj != null)
         {
@@ -83,27 +82,27 @@ public class DateIndicatorService
         }
     }
 
-    public static async Task RemoveDate(int id)
+    public async Task RemoveDate(int id)
     {
         await Init();
 
-        await db.DeleteAsync<Activity>(id);
+        await db.DeleteAsync<ExerciseActivity>(id);
     }
 
-    public static async Task<List<Activity>> GetActivityDates()
+    public async Task<List<ExerciseActivity>> GetActivityDates()
     {
         await Init();
-        var dates = await db.Table<Activity>().ToListAsync();
+        var dates = await db.Table<ExerciseActivity>().ToListAsync();
 
         return dates;
     }
 
-    public static async Task<List<Activity>> GetActivityBetween(string startDate, string endDate)
+    public async Task<List<ExerciseActivity>> GetActivityBetween(string startDate, string endDate)
     {
         await Init();
         var dbConnection = db.GetConnection();
 
-        return dbConnection.Query<Activity>($"SELECT * FROM Activity WHERE date BETWEEN '{startDate}' AND '{endDate}'", startDate, endDate);
+        return dbConnection.Query<ExerciseActivity>($"SELECT * FROM Activity WHERE date BETWEEN '{startDate}' AND '{endDate}'", startDate, endDate);
     }
 
     public enum DaysOfWeek

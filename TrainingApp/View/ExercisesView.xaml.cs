@@ -5,8 +5,9 @@ namespace TrainingApp;
 
 public partial class ExercisesView : ContentPage
 {
-    public ExercisesView()
+    public ExercisesView(ExercisesView viewModel)
 	{
         InitializeComponent();
+        BindingContext = viewModel;
     }
 }

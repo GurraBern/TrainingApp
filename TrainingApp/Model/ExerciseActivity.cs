@@ -3,7 +3,7 @@
 using System;
 using SQLite;
 
-public class Activity
+public class ExerciseActivity
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
