@@ -14,7 +14,9 @@ public partial class MainPageViewModel : BaseViewModel
         Title = "Test App";
         this.dateService = dateService;
 
-        RefreshActivityGrid();
+
+        new Action(async () => await RefreshActivityGrid()).Invoke();
+
     }
 
     private async Task RefreshStreakLabelAsync()
@@ -59,6 +61,7 @@ public partial class MainPageViewModel : BaseViewModel
     async Task RefreshActivityGrid()
     {
         List<ExerciseActivity> activityDates = new List<ExerciseActivity>();
+        ActivityIndicators.Clear();
 
         var previousActivity = await GetPreviousMonth() as List<ExerciseActivity>;
         if (previousActivity != null)
@@ -70,6 +73,7 @@ public partial class MainPageViewModel : BaseViewModel
 
         foreach (ExerciseActivity activityDate in activityDates)
         {
+            activityDate.Date = activityDate.Date.Substring(activityDate.Date.Length - 2);
             ActivityIndicators.Add(activityDate);
         }
     }

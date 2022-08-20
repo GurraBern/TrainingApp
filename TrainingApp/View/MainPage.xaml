@@ -22,30 +22,22 @@
             <Button Text="Sun" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
         </HorizontalStackLayout>
 
-        <!--UnComment-->
-        <!--<FlexLayout x:Name="flexLayout" HeightRequest="150" WidthRequest="210" Margin="0" Wrap="Wrap"></FlexLayout>-->
-
-        <CollectionView
-                ItemsSource="{Binding ActivityIndicators}"
-                BackgroundColor="Transparent"
-                SelectionMode="None">
-
-
-            <CollectionView.ItemTemplate>
+        <FlexLayout BindableLayout.ItemsSource="{Binding ActivityIndicators}" Wrap="Wrap" WidthRequest="210" HeightRequest="150">
+            <BindableLayout.ItemTemplate>
                 <DataTemplate x:DataType="model:ExerciseActivity">
-                    <Label BackgroundColor="Green" FontSize="16" TextColor="Red" Text="{Binding ActivityState}"></Label>
+                    <Button Padding="0" HeightRequest="30" WidthRequest="30" FontAttributes="Bold" BackgroundColor="Orange" FontSize="14" TextColor="White" Text="{Binding Date}"></Button>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
 
 
+       
 
 
         <Label x:Name="StreakLabel" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
         <Label x:Name="LastWorkoutDuration" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
         <!--<Button Margin="500, 0" Clicked="ClockedIn" Text="▶️"></Button>-->
 
-        <!--<Button Command="{Binding RefreshActivityGridCommand}" Text="Test"></Button>-->
         
         <HorizontalStackLayout HorizontalOptions="Center">
             <Button Command="{Binding PresentCommand}" Text="Went To Gym"></Button>
