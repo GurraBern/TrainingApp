@@ -14,7 +14,6 @@ public partial class MainPageViewModel : BaseViewModel
         Title = "Test App";
         this.dateService = dateService;
 
-
         new Action(async () => await RefreshActivityGrid()).Invoke();
 
     }
@@ -52,7 +51,7 @@ public partial class MainPageViewModel : BaseViewModel
 
     private async Task SetIndicatorStatusAsync(ActivityState state)
     {
-        await dateService.UpdateDate(DateTime.Now, state);
+        await DateIndicatorService.UpdateDate(DateTime.Now, state);
         await ProfileService.UpdateLatestActivity(DateTime.Now, state);
         await RefreshStreakLabelAsync();
         await RefreshActivityGrid();
@@ -60,7 +59,7 @@ public partial class MainPageViewModel : BaseViewModel
 
     async Task RefreshActivityGrid()
     {
-        List<ExerciseActivity> activityDates = new List<ExerciseActivity>();
+        List<ExerciseActivity> activityDates = new();
         ActivityIndicators.Clear();
 
         var previousActivity = await GetPreviousMonth() as List<ExerciseActivity>;
@@ -73,7 +72,8 @@ public partial class MainPageViewModel : BaseViewModel
 
         foreach (ExerciseActivity activityDate in activityDates)
         {
-            activityDate.Date = activityDate.Date.Substring(activityDate.Date.Length - 2);
+            activityDate.Date = activityDate.Date[^2..];
+
             ActivityIndicators.Add(activityDate);
         }
     }
@@ -95,7 +95,7 @@ public partial class MainPageViewModel : BaseViewModel
             return Enumerable.Empty<ExerciseActivity>();
         }
 
-        DateTime offsetDate = new DateTime(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
+        DateTime offsetDate = new(endDatePreviousMonth.Year, endDatePreviousMonth.Month, endDatePreviousMonth.Day - offsetDays);
         var date1 = offsetDate.ToShortDateString();
         var date2 = endDatePreviousMonth.ToShortDateString();
 

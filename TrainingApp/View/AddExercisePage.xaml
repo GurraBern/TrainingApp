@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="TrainingApp.View.AddExercisePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"    
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:model="clr-namespace:TrainingApp.Model"
+    xmlns:viewmodel="clr-namespace:TrainingApp.ViewModel"
+    Title="Add Exercise"
+    x:DataType="viewmodel:AddExerciseViewModel"
+    BackgroundColor="Grey">
+
+    <StackLayout Orientation="Vertical" Padding="20,40,20,0">
+        
+        <Label Text="Exercise Name" FontAttributes="Bold"></Label>
+        <Entry Text="{Binding Name}" BackgroundColor="White" TextColor="DarkSlateGrey" HeightRequest="50" FontAttributes="Bold"/>
+
+        <Label Text="Description" FontAttributes="Bold"></Label>
+        <Entry Text="{Binding Description}" BackgroundColor="White" TextColor="DarkSlateGrey" HeightRequest="50" FontAttributes="Bold"/>
+
+        <Label Text="Equipment" FontAttributes="Bold"></Label>
+        <Entry Text="{Binding Equipment}" BackgroundColor="White" TextColor="DarkSlateGrey" HeightRequest="50" FontAttributes="Bold"/>
+
+        <Button Command="{Binding SaveCommand}" Text="Create Exercise"></Button>
+        
+    </StackLayout>
+
+
+</ContentPage>

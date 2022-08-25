@@ -9,8 +9,6 @@
     x:DataType="viewmodel:MainPageViewModel"
     BackgroundColor="Grey">
 
-
-
     <VerticalStackLayout>
         <HorizontalStackLayout WidthRequest="210" MaximumWidthRequest="210" Margin="0,0,0,0">
             <Button Text="Mon" FontSize="12" Padding="0" WidthRequest="30" CornerRadius="5" TextColor="Black"></Button>
@@ -29,10 +27,6 @@
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </FlexLayout>
-
-
-       
-
 
         <Label x:Name="StreakLabel" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>
         <Label x:Name="LastWorkoutDuration" HorizontalOptions="Center" FontSize="24" TextColor="Black" FontAttributes="Bold"></Label>

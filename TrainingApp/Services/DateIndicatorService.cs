@@ -23,7 +23,7 @@ public class DateIndicatorService
         var endOfMonth = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
         var dates = await GetActivityBetween(today.ToShortDateString(), endOfMonth.ToShortDateString());
 
-        if(dates.Count() <= 0)
+        if(dates.Count <= 0)
         {
             await AddDatesToMonth(DateTime.Today);
         }
@@ -48,7 +48,7 @@ public class DateIndicatorService
         await Init();
 
         int daysCount = DateTime.DaysInMonth(date.Year, date.Month);
-        List<ExerciseActivity> activityDates = new List<ExerciseActivity>();
+        List<ExerciseActivity> activityDates = new();
 
         for (int i = 1; i < daysCount + 1; i++)
         {
@@ -66,7 +66,7 @@ public class DateIndicatorService
         var id = await db.InsertAllAsync(activityDates);
     }
 
-    public async Task UpdateDate(DateTime date, ActivityState activityState)
+    public static async Task UpdateDate(DateTime date, ActivityState activityState)
     {
         var dateShort = date.ToShortDateString();
         var activityIndicatorObj = await db.Table<ExerciseActivity>().Where(v => v.Date.Equals(dateShort)).FirstOrDefaultAsync();

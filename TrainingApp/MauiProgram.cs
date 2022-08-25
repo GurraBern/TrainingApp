@@ -27,6 +27,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<ExercisesViewModel>();
 		builder.Services.AddSingleton<ExercisesView>();
 
-		return builder.Build();
+        builder.Services.AddSingleton<AddExerciseViewModel>();
+        builder.Services.AddSingleton<AddExercisePage>();
+
+        return builder.Build();
 	}
 }

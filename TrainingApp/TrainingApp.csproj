@@ -50,16 +50,23 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+	  <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\AddExercisePage.xaml.cs">
+	    <DependentUpon>AddExercisePage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\ExercisesView.xaml.cs">
 	    <DependentUpon>ExercisesView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="View\AddExercisePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\ExercisesView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

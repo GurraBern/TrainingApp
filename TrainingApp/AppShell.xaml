@@ -6,13 +6,14 @@
     xmlns:view="clr-namespace:TrainingApp.View"
     Shell.FlyoutBehavior="Disabled">
 
-    <!--<ShellContent
-        ContentTemplate="{DataTemplate view:ExercisesView}"
-        Route="Exercises"/>-->  
-    
     <ShellContent
+        Title="Exercises Add"
+        ContentTemplate="{DataTemplate view:ExercisesView}"
+        Route="ExercisesView"/>  
+    
+    <!--<ShellContent
         Title="First Page"
         ContentTemplate="{DataTemplate view:MainPage}"
-        Route="MainPage" />
+        Route="MainPage" />-->
 
 </Shell>

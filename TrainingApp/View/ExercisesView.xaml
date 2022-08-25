@@ -1,75 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
-    x:Class="TrainingApp.ExercisesView"
+    x:Class="TrainingApp.View.ExercisesView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"    
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:model="clr-namespace:TrainingApp.Model"
     xmlns:viewmodel="clr-namespace:TrainingApp.ViewModel"
+    Title="Exercises"
     x:DataType="viewmodel:ExercisesViewModel"
     BackgroundColor="Grey">
 
+    <VerticalStackLayout>
+        <Button Command="{Binding AddCommand}" Text="Add New Exercise"></Button>
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="5"
+              RowDefinitions="*,Auto"
+              RowSpacing="0">
 
-
-
-    <Grid ColumnDefinitions="*,*"
-          ColumnSpacing="5"
-          RowDefinitions="*,Auto"
-          RowSpacing="0">
-
-        <!--<CollectionView BackgroundColor="Transparent"
-                        Grid.ColumnSpan="12"
-                        ItemsSource="{Binding Exercises}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:Exercise">
-                    <Grid Padding="10">
-                        <Frame HeightRequest="125">
-                            <Label Text="{Binding Name}"></Label>
-                        </Frame>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-        <Button Text="Get Exercises"
-                Command="{Binding GetExercisesCommand}"
-                Grid.Row="1"
-                Margin="8"></Button>-->
-        
-        
-    </Grid>
-    
-    <!--<StackLayout>
-        <HorizontalStackLayout BackgroundColor="Red" WidthRequest="210" MaximumWidthRequest="210" Margin="0,0,0,0">
-            <Button Text="more>"></Button>
-            <Button Text="Search Exercises"></Button>
-            <Button Text="Profile"></Button>
-        </HorizontalStackLayout>
-
-        <VerticalStackLayout BackgroundColor="Blue">
-
-            --><!--Navbar--><!--
-
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-            <Label Text="Bruh"></Label>
-
-
-
-
-        </VerticalStackLayout>
-    </StackLayout>-->
+            <CollectionView BackgroundColor="Transparent"
+                            Grid.ColumnSpan="12"
+                            ItemsSource="{Binding Exercises}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Exercise">
+                        <Grid Padding="10">
+                            <Frame HeightRequest="125">
+                                <Label Text="{Binding Name}"></Label>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </VerticalStackLayout>
 </ContentPage>
